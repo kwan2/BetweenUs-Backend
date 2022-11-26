@@ -2,10 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { HackathonDto } from './dto/hackathon-request.dto';
-import { HackathonListRO, HackathonRO } from './dto/hackathon-response.dto';
+import {
+  HackathonDetailRO,
+  HackathonListRO,
+  HackathonRO,
+} from './dto/hackathon-response.dto';
 import { HackathonEntity } from './entity/hackathon.entity';
 import { HackathonExeption } from './hackathon.exception';
-import { getRepository } from 'typeorm';
 
 @Injectable()
 export class HackathonService {
@@ -59,5 +62,13 @@ export class HackathonService {
       order: { created_time: 'DESC' },
     });
     return hackathonList;
+  }
+
+  async getDetailHackathon(postNum: number): Promise<HackathonDetailRO> {
+    const hackathonDetail = await this.hackathonRepository.findOne({
+      select: {},
+      where: { id: postNum },
+    });
+    return hackathonDetail;
   }
 }

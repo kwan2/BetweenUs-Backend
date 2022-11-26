@@ -6,12 +6,14 @@ import {
   HttpStatus,
   Param,
   Post,
-  Query,
 } from '@nestjs/common';
-import { query } from 'express';
 import { ResponseBuilder, ResponseDto } from 'src/common/dto/response.dto';
 import { HackathonDto } from './dto/hackathon-request.dto';
-import { HackathonListRO, HackathonRO } from './dto/hackathon-response.dto';
+import {
+  HackathonDetailRO,
+  HackathonListRO,
+  HackathonRO,
+} from './dto/hackathon-response.dto';
 import { HackathonService } from './hackathon.service';
 
 @Controller('hackathon')
@@ -42,9 +44,23 @@ export class HackathonController {
       await this.hackathonService.hackathonList(page);
 
     return new ResponseBuilder<HackathonListRO[]>()
-      .status(HttpStatus.CREATED)
+      .status(HttpStatus.OK)
       .message('get Hackathon list successfully')
       .body(hackathonListRO)
+      .build();
+  }
+  @HttpCode(HttpStatus.OK)
+  @Get('/detail/:postNum')
+  async getHackathonDetail(
+    @Param('postNum') postNum,
+  ): Promise<ResponseDto<HackathonDetailRO>> {
+    const hackathonDetailRO: HackathonDetailRO =
+      await this.hackathonService.getDetailHackathon(postNum);
+
+    return new ResponseBuilder<HackathonDetailRO>()
+      .status(HttpStatus.OK)
+      .message('get hackathon detail successfully')
+      .body(hackathonDetailRO)
       .build();
   }
 }
