@@ -8,7 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { ResponseBuilder, ResponseDto } from 'src/common/dto/response.dto';
-import { ApplicantsRO } from './dto/applicants-response.dto';
+import { ApplicantsListRO, ApplicantsRO } from './dto/applicants-response.dto';
 import { ApplicantService } from './applicants.service';
 
 @Controller('applicant')
@@ -33,7 +33,23 @@ export class ApplicantsController {
 
     return new ResponseBuilder<ApplicantsRO>()
       .status(HttpStatus.CREATED)
-      .message('create Hackathon successfully')
+      .message('apply to hackathon successfully')
+      .build();
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get('/list/:hackathon_id/:part')
+  async getApplyList(
+    @Param('hackathon_id') hackathon_id,
+    @Param('part') part,
+  ): Promise<ResponseDto<any>> {
+    const applicationListRO: any =
+      await this.applicantsService.getApplyHackathonList(hackathon_id, part);
+
+    return new ResponseBuilder<any>()
+      .status(HttpStatus.OK)
+      .message('get applicant successfully')
+      .body(applicationListRO)
       .build();
   }
 }
