@@ -1,13 +1,13 @@
 import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 
-@Entity('USER')
+@Entity('Users')
 export class UserEntity {
-  @PrimaryGeneratedColumn({ type: 'int', name: 'user_id' })
-  userId: number;
+  @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
+  id: number;
 
-  @Column({ type: 'varchar', length: 255, name: 'id', nullable: false })
-  id: string;
+  @Column({ type: 'varchar', length: 255, name: 'email', nullable: false })
+  email: string;
 
   @Column({ type: 'varchar', length: 255, name: 'password', nullable: false })
   password: string;
@@ -19,8 +19,8 @@ export class UserEntity {
     }
   }
 
-  @Column({ type: 'varchar', length: 255, name: 'user_name', nullable: false })
-  userName: string;
+  @Column({ type: 'varchar', length: 255, name: 'name', nullable: false })
+  name: string;
 
   @Column({
     type: 'varchar',

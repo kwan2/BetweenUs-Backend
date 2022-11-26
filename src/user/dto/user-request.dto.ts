@@ -9,9 +9,12 @@ import {
 const sex = ['MALE', 'FEMALE'];
 
 export class RegisterUserDto {
+  @IsNumber()
+  readonly id: number;
+
   @IsNotEmpty()
   @IsString()
-  readonly id: string;
+  readonly email: string;
 
   @IsNotEmpty()
   @IsString()
@@ -19,7 +22,7 @@ export class RegisterUserDto {
 
   @IsNotEmpty()
   @IsString()
-  readonly userName: string;
+  readonly name: string;
 
   @IsOptional()
   @IsString()
