@@ -13,6 +13,7 @@ import {
   HackathonDetailRO,
   HackathonListRO,
   HackathonRO,
+  StartHackathonRO,
 } from './dto/hackathon-response.dto';
 import { HackathonService } from './hackathon.service';
 
@@ -30,8 +31,22 @@ export class HackathonController {
 
     return new ResponseBuilder<HackathonRO>()
       .status(HttpStatus.CREATED)
-      .message('create Hackathon successfully')
+      .message('start Hackathon successfully')
       .body(createHackathonRO)
+      .build();
+  }
+
+  @HttpCode(HttpStatus.CREATED)
+  @Post('/start')
+  async startHackathon(
+    @Body('hackathon_id') hackathon_id,
+  ): Promise<ResponseDto<HackathonRO>> {
+    const startHackathonRO: StartHackathonRO =
+      await this.hackathonService.startHackathon(hackathon_id);
+
+    return new ResponseBuilder<HackathonRO>()
+      .status(HttpStatus.CREATED)
+      .message('start Hackathon successfully')
       .build();
   }
 
