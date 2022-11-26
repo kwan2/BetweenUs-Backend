@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import typeormConfig from './config/typeorm.config';
 import { UserModule } from './user/user.module';
 import { HackathonModule } from './Hackathon/hackathon.module';
+import { ApplciantModule } from './Applicant/applicants.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { HackathonModule } from './Hackathon/hackathon.module';
     }),
     UserModule,
     HackathonModule,
+    ApplciantModule,
   ],
   controllers: [AppController],
   providers: [AppService],
