@@ -6,6 +6,7 @@ import {
   HackathonDetailRO,
   HackathonListRO,
   HackathonRO,
+  StartHackathonRO,
 } from './dto/hackathon-response.dto';
 import { HackathonEntity } from './entity/hackathon.entity';
 import { HackathonExeption } from './hackathon.exception';
@@ -69,6 +70,16 @@ export class HackathonService {
       select: {},
       where: { id: postNum },
     });
+    return hackathonDetail;
+  }
+
+  async startHackathon(hackathon_id: number): Promise<StartHackathonRO> {
+    const hackathonEntity = new HackathonEntity();
+    hackathonEntity.id = hackathon_id;
+    hackathonEntity.is_progress = true;
+    const hackathonDetail = await this.hackathonRepository.save(
+      hackathonEntity,
+    );
     return hackathonDetail;
   }
 }

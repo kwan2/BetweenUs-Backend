@@ -70,3 +70,18 @@ export class HackathonDetailRO {
     this.views = hackathon.views;
   }
 }
+//해커톤 시작시
+
+export class StartHackathonRO {
+  id: number;
+  name: string;
+  is_progress: boolean;
+  views: number;
+
+  constructor(hackathon: HackathonEntity) {
+    this.id = hackathon.id;
+    this.name = hackathon.name;
+    this.is_progress = hackathon.is_progress;
+    this.views = hackathon.views;
+  }
+}
