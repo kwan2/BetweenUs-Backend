@@ -100,4 +100,20 @@ export class ApplicantService {
     connection.close();
     return applicantsDetail;
   }
+
+  async deleteRefuseHackathon(
+    hackathon_id: number,
+    user_id: number,
+    part: string,
+  ): Promise<any> {
+    const applicantsEntity = new ApplicantsEntity();
+    applicantsEntity.user_id = user_id;
+    applicantsEntity.hackathon_id = hackathon_id;
+    applicantsEntity.part = part;
+
+    const savedApplicants = await this.applicantsRepository.delete(
+      applicantsEntity,
+    );
+    return savedApplicants;
+  }
 }
