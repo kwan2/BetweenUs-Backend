@@ -1,6 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { HackathonEntity } from 'src/Hackathon/entity/hackathon.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('Applicants')
+@Entity({
+  name: 'Applicants',
+  synchronize: false,
+})
 export class ApplicantsEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;

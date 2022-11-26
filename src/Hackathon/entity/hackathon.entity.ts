@@ -1,6 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { type } from 'os';
+import { ApplicantsEntity } from 'src/Applicant/entity/applicants.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('Hackathons')
+@Entity({
+  name: 'Hackathons',
+  synchronize: false,
+})
 export class HackathonEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
@@ -48,4 +53,5 @@ export class HackathonEntity {
 
   @Column({ type: 'int', name: 'views', nullable: true })
   views: number;
+
 }
