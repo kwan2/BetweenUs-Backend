@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { createConnection, getConnection, Repository } from 'typeorm';
-import { ApplicantsListRO, ApplicantsRO } from './dto/applicants-response.dto';
+import { ApplicantsRO } from './dto/applicants-response.dto';
 import { ApplicantsEntity } from './entity/applicants.entity';
 import { applicantsException } from './applicants.exception';
 import { UserEntity } from 'src/user/entity/user.entity';
@@ -68,5 +68,36 @@ export class ApplicantService {
 
     connection.close();
     return savedApplicants;
+  }
+
+  async getDetailApplicant(
+    hackathon_id: number,
+    user_id: number,
+    part: string,
+  ): Promise<any> {
+    const connection = await createConnection({
+      name: 'default',
+      type: 'mysql',
+      host: 'database-1.cmdklxbskwca.ap-northeast-2.rds.amazonaws.com',
+      port: 3306,
+      username: 'admin',
+      password: '12345678',
+      database: 'betweendb',
+    });
+    const applicantsDetail = await getConnection()
+      .createQueryBuilder()
+      .select(
+        'DISTINCT U.name, U.age, U.institution, U.major, A.self_Introduction',
+      )
+      .from('Users', 'U')
+      .from('Hackathons', 'H')
+      .from('Applicants', 'A')
+      .where(
+        'A.hackathon_id = :hackathon_id and A.part = :part and U.id = :user_id',
+        { hackathon_id: hackathon_id, part: part, user_id: user_id },
+      )
+      .getRawOne();
+    connection.close();
+    return applicantsDetail;
   }
 }
