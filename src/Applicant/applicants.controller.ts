@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -8,8 +9,9 @@ import {
   Post,
 } from '@nestjs/common';
 import { ResponseBuilder, ResponseDto } from 'src/common/dto/response.dto';
-import { ApplicantsListRO, ApplicantsRO } from './dto/applicants-response.dto';
+import { ApplicantsRO } from './dto/applicants-response.dto';
 import { ApplicantService } from './applicants.service';
+import { participantRO } from 'src/Participant/dto/participant-response.dto';
 
 @Controller('applicant')
 export class ApplicantsController {
@@ -70,6 +72,27 @@ export class ApplicantsController {
       .status(HttpStatus.OK)
       .message('get applicant detail successfully')
       .body(detailList)
+      .build();
+  }
+
+  //거부
+  @HttpCode(HttpStatus.OK)
+  @Delete('/refuse')
+  async postRefuse(
+    @Body('hackathon_id') hackathon_id: number,
+    @Body('user_id') user_id: number,
+    @Body('part') part: string,
+  ): Promise<ResponseDto<participantRO>> {
+    const body: any = await this.applicantsService.deleteRefuseHackathon(
+      hackathon_id,
+      user_id,
+      part,
+    );
+
+    return new ResponseBuilder<participantRO>()
+      .status(HttpStatus.CREATED)
+      .message('delete applicant in hackathon successfully')
+      .body(body)
       .build();
   }
 }
