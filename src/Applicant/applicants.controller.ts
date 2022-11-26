@@ -52,4 +52,24 @@ export class ApplicantsController {
       .body(applicationListRO)
       .build();
   }
+
+  @HttpCode(HttpStatus.OK)
+  @Get('/:hackathon_id/:user_id/:part')
+  async getDetailApplyList(
+    @Param('hackathon_id') hackathon_id,
+    @Param('user_id') user_id,
+    @Param('part') part,
+  ): Promise<ResponseDto<any>> {
+    const detailList: any = await this.applicantsService.getDetailApplicant(
+      hackathon_id,
+      user_id,
+      part,
+    );
+
+    return new ResponseBuilder<any>()
+      .status(HttpStatus.OK)
+      .message('get applicant detail successfully')
+      .body(detailList)
+      .build();
+  }
 }
