@@ -17,12 +17,12 @@ export class UserService {
   async registerUser(
     registerUserDto: RegisterUserDto,
   ): Promise<RegisterUserRO> {
-    const { id, password, userName, description, major, age, sex } =
+    const { email, password, name, description, major, age, sex } =
       registerUserDto;
 
     const existUser = await this.userRepository.findOne({
       where: {
-        id: id,
+        email: email,
       },
     });
     if (existUser) {
@@ -30,15 +30,15 @@ export class UserService {
     }
 
     const userEntity = new UserEntity();
-    userEntity.id = id;
+    userEntity.email = email;
     userEntity.password = password;
-    userEntity.userName = userName;
+    userEntity.name = name;
     userEntity.description = description;
     userEntity.major = major;
     userEntity.age = age;
     userEntity.sex = sex;
 
-    const newUser = await this.userRepository.save(userEntity);
-    return new RegisterUserRO(newUser);
+    const savedUser = await this.userRepository.save(userEntity);
+    return new RegisterUserRO(savedUser);
   }
 }

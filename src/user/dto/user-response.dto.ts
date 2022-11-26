@@ -1,9 +1,8 @@
 import { UserEntity } from '../entity/user.entity';
 
 export class RegisterUserRO {
-  userId: number;
-  id: string;
-  userName: string;
+  email: string;
+  name: string;
   description: string;
   profilePath: string;
   major: string;
@@ -12,9 +11,8 @@ export class RegisterUserRO {
   sex: string;
 
   constructor(user: UserEntity) {
-    this.userId = user.userId;
-    this.id = user.id;
-    this.userName = user.userName;
+    this.email = user.email;
+    this.name = user.name;
     this.description = user.description;
     this.profilePath = user.profilePath;
     this.major = user.major;
