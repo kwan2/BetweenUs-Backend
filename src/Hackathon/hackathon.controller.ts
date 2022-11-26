@@ -6,7 +6,9 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
 } from '@nestjs/common';
+import { query } from 'express';
 import { ResponseBuilder, ResponseDto } from 'src/common/dto/response.dto';
 import { HackathonDto } from './dto/hackathon-request.dto';
 import { HackathonListRO, HackathonRO } from './dto/hackathon-response.dto';
@@ -32,17 +34,17 @@ export class HackathonController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @Get('/list')
+  @Get('/list/:page')
   async listHackathon(
-    @Body() hackathonDto: HackathonDto,
-  ): Promise<ResponseDto<HackathonListRO>> {
-    const hackathonListRO: HackathonListRO =
-      await this.hackathonService.hackathonList(hackathonDto, 1);
+    @Param('page') page,
+  ): Promise<ResponseDto<HackathonListRO[]>> {
+    const hackathonListRO: HackathonListRO[] =
+      await this.hackathonService.hackathonList(page);
 
-    return new ResponseBuilder<HackathonListRO>()
+    return new ResponseBuilder<HackathonListRO[]>()
       .status(HttpStatus.CREATED)
       .message('get Hackathon list successfully')
-      .body([hackathonListRO])
+      .body(hackathonListRO)
       .build();
   }
 }

@@ -51,34 +51,13 @@ export class HackathonService {
     return new HackathonRO(savedHackathon);
   }
 
-  async hackathonList(hackathonDto: HackathonDto, id: number): Promise<HackathonListRO> {
-    const {
-      name,
-      start_date,
-      end_date,
-      developer,
-      pm,
-      designer,
-      hackathon_image,
-      views,
-    } = hackathonDto;
-
-    const hackathonEntity = new HackathonEntity();
-    hackathonEntity.name = name;
-    hackathonEntity.start_date = start_date;
-    hackathonEntity.end_date = end_date;
-    hackathonEntity.developer = developer;
-    hackathonEntity.pm = pm;
-    hackathonEntity.designer = designer;
-    hackathonEntity.hackathon_image = hackathon_image;
-    hackathonEntity.views = views;
-
-    const savedHackathon = await this.hackathonRepository.find({
+  async hackathonList(page: number): Promise<HackathonListRO[]> {
+    const hackathonList = await this.hackathonRepository.find({
       select: {},
-      where: {
-        id: id,
-      },
+      take: 10,
+      skip: (page - 1) * 10,
+      order: { created_time: 'DESC' },
     });
-    return new HackathonListRO(savedHackathon[0]);
+    return hackathonList;
   }
 }

@@ -25,14 +25,16 @@ export class HackathonListRO {
   views: number;
 
   constructor(hackathon: HackathonEntity) {
-    this.id = hackathon.id;
-    this.name = hackathon.name;
-    this.hackathon_image = hackathon.hackathon_image;
-    this.start_date = hackathon.start_date;
-    this.end_date = hackathon.end_date;
-    this.developer = hackathon.developer;
-    this.pm = hackathon.pm;
-    this.designer = hackathon.designer;
-    this.views = hackathon.views;
+    [
+      (this.id = hackathon.id),
+      (this.name = hackathon.name),
+      (this.hackathon_image = hackathon.hackathon_image),
+      (this.start_date = hackathon.start_date),
+      (this.end_date = hackathon.end_date),
+      (this.developer = hackathon.developer),
+      (this.pm = hackathon.pm),
+      (this.designer = hackathon.designer),
+      (this.views = hackathon.views),
+    ];
   }
 }
