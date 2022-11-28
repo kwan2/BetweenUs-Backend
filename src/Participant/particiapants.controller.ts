@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApplicantService } from 'src/Applicant/applicants.service';
 import { ResponseBuilder, ResponseDto } from 'src/common/dto/response.dto';
+import { Public } from 'src/config/skip-auth.decorator';
 import { participantRO } from './dto/participant-response.dto';
 import { ParticipantService } from './participants.service';
 
@@ -18,6 +19,7 @@ export class ParticipantsController {
   constructor(private readonly participantService: ParticipantService) {}
 
   //승인
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Post('/accept')
   async postApply(

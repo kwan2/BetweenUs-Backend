@@ -19,7 +19,10 @@ export class HackathonService {
     private readonly hackathonException: HackathonExeption,
   ) {}
 
-  async createHackathon(hackathonDto: HackathonDto): Promise<HackathonRO> {
+  async createHackathon(
+    hackathonDto: HackathonDto,
+    owner_id: number,
+  ): Promise<HackathonRO> {
     const {
       name,
       start_date,
@@ -30,13 +33,15 @@ export class HackathonService {
       developer,
       pm,
       designer,
-      hackathon_image,
       is_progress,
+      hackathon_image,
       created_time,
       views,
     } = hackathonDto;
 
     const hackathonEntity = new HackathonEntity();
+    console.log(owner_id);
+    hackathonEntity.owner_id = owner_id;
     hackathonEntity.name = name;
     hackathonEntity.start_date = start_date;
     hackathonEntity.end_date = end_date;
@@ -46,9 +51,9 @@ export class HackathonService {
     hackathonEntity.developer = developer;
     hackathonEntity.pm = pm;
     hackathonEntity.designer = designer;
-    hackathonEntity.hackathon_image = hackathon_image;
     hackathonEntity.is_progress = is_progress;
     hackathonEntity.created_time = created_time;
+    hackathonEntity.hackathon_image = hackathon_image;
     hackathonEntity.views = views;
 
     const savedHackathon = await this.hackathonRepository.save(hackathonEntity);

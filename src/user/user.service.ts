@@ -5,7 +5,12 @@ import { RegisterUserRO } from './dto/user-response.dto';
 import { UserEntity } from './entity/user.entity';
 import { UserException } from './user.exception';
 import { compare, hash } from 'bcrypt';
-import { BadRequestException, HttpStatus, Injectable, HttpException } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpStatus,
+  Injectable,
+  HttpException,
+} from '@nestjs/common';
 @Injectable()
 export class UserService {
   constructor(
@@ -41,49 +46,52 @@ export class UserService {
   //   const savedUser = await this.userRepository.save(userEntity);
   //   return new RegisterUserRO(savedUser);
   // }
-  findAll() : Promise<UserEntity[]> {
+  findAll(): Promise<UserEntity[]> {
     return this.userRepository.find();
   }
-  findOne(id : number) : Promise<UserEntity> {
+  findOne(id: number): Promise<UserEntity> {
     return this.userRepository.findOne({
-      where : {
-        id : id,
+      where: {
+        id: id,
       },
-      lock : {mode : "optimistic" , version : 1},
+      lock: { mode: 'optimistic', version: 1 },
     });
-  } 
-  async remove(id : number) : Promise<void> {
+  }
+  async remove(id: number): Promise<void> {
     await this.userRepository.delete(id);
   }
-  async createNewUser(user : UserEntity) : Promise<void> {
+  async createNewUser(user: UserEntity): Promise<void> {
     await this.userRepository.save(user);
   }
-  async find(id : number) : Promise<UserEntity | undefined> {
+  async find(id: number): Promise<UserEntity | undefined> {
     return this.userRepository.findOne({
-      where : {
-        id : id,
+      where: {
+        id: id,
       },
-      lock : {mode : "optimistic" , version : 1},
+      lock: { mode: 'optimistic', version: 1 },
     });
   }
-  async getByEmail(email: string) : Promise<UserEntity>{
-    const user =  this.userRepository.findOne({ select : {} , where : { email : email }  });
+  async getByEmail(email: string): Promise<UserEntity> {
+    const user = this.userRepository.findOne({
+      select: {},
+      where: { email: email },
+    });
     return user;
     throw new HttpException(
       'User with this email does not exist',
       HttpStatus.NOT_FOUND,
     );
   }
-  async create(user : UserEntity) : Promise<UserEntity> {
+  async create(user: UserEntity): Promise<UserEntity> {
     await this.userRepository.save(user);
     return user;
   }
-  async getById(id : number) {
-    const user = await this.userRepository.findOne({ 
-      where : {
-        id : id,
+  async getById(id: number) {
+    const user = await this.userRepository.findOne({
+      where: {
+        id: id,
       },
-     });
+    });
     if (user) {
       return user;
     }
@@ -95,7 +103,10 @@ export class UserService {
   async setCurrentRefreshToken(pastRefreshToken: string, email: string) {
     const refreshToken = await hash(pastRefreshToken, 10);
     // await this.userRepository.update(email, { refreshToken });
-    const user =  await this.userRepository.findOne({ select : {} , where : { email : email }  });
+    const user = await this.userRepository.findOne({
+      select: {},
+      where: { email: email },
+    });
     user.refreshToken = refreshToken;
     await this.userRepository.save(user);
   }
@@ -117,7 +128,10 @@ export class UserService {
     return this.userRepository.update(id, {
       refreshToken: null,
     });
-    const user = await this.userRepository.findOne({ select : {}, where : { id : id }});
+    const user = await this.userRepository.findOne({
+      select: {},
+      where: { id: id },
+    });
     user.refreshToken = null;
     await this.userRepository.save(user);
   }
