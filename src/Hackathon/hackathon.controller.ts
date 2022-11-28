@@ -70,6 +70,7 @@ export class HackathonController {
       .build();
   }
 
+  @Public()
   @HttpCode(HttpStatus.CREATED)
   @Post('/start')
   async startHackathon(
@@ -85,6 +86,7 @@ export class HackathonController {
       .build();
   }
 
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Get('/list/:page')
   async listHackathon(
@@ -99,6 +101,8 @@ export class HackathonController {
       .body(hackathonListRO)
       .build();
   }
+
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Get('/detail/:postNum')
   async getHackathonDetail(

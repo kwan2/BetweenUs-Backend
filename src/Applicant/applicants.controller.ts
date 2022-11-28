@@ -12,11 +12,13 @@ import { ResponseBuilder, ResponseDto } from 'src/common/dto/response.dto';
 import { ApplicantsRO } from './dto/applicants-response.dto';
 import { ApplicantService } from './applicants.service';
 import { participantRO } from 'src/Participant/dto/participant-response.dto';
+import { Public } from 'src/config/skip-auth.decorator';
 
 @Controller('applicant')
 export class ApplicantsController {
   constructor(private readonly applicantsService: ApplicantService) {}
 
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Post('/apply')
   async postApply(
@@ -39,6 +41,7 @@ export class ApplicantsController {
       .build();
   }
 
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Get('/list/:hackathon_id/:part')
   async getApplyList(
@@ -55,6 +58,7 @@ export class ApplicantsController {
       .build();
   }
 
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Get('/:hackathon_id/:user_id/:part')
   async getDetailApplyList(
@@ -76,6 +80,7 @@ export class ApplicantsController {
   }
 
   //거부
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Delete('/refuse')
   async postRefuse(
