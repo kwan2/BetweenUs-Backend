@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
+import { ResponseBuilder } from 'src/common/dto/response.dto';
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -12,6 +13,10 @@ const s3 = new AWS.S3();
 @Injectable()
 export class ImageService {
   async uploadImage(files) {
-    return 'SUCESS';
+    return new ResponseBuilder<any>()
+      .status(HttpStatus.OK)
+      .message('post image succeess')
+      .body(files[0].location)
+      .build();
   }
 }

@@ -10,6 +10,9 @@ export class HackathonEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
+  @Column({ type: 'int', name: 'owner_id', nullable: true })
+  owner_id: number;
+
   @Column({ type: 'varchar', length: 191, name: 'name', nullable: true })
   name: string;
 
@@ -53,5 +56,4 @@ export class HackathonEntity {
 
   @Column({ type: 'int', name: 'views', nullable: true })
   views: number;
-
 }

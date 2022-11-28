@@ -37,12 +37,12 @@ export class HackathonDto {
   readonly designer: string;
 
   @IsNotEmpty()
-  @IsString()
-  readonly hackathon_image: string;
-
-  @IsNotEmpty()
   @IsBoolean()
   readonly is_progress: boolean;
+
+  @IsNotEmpty()
+  @IsString()
+  readonly hackathon_image: string;
 
   @IsNotEmpty()
   @IsString()

@@ -8,10 +8,12 @@ import { UserModule } from './user/user.module';
 import { HackathonModule } from './Hackathon/hackathon.module';
 import { ApplciantModule } from './Applicant/applicants.module';
 import { ParticipantModule } from './Participant/participants.module';
+import { uploadmodule } from './upload/uploader.module';
+import { imageModule } from './image/image.moudle';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guard/jwt-auth.guard';
-import * as Joi from "joi";
+import * as Joi from 'joi';
 
 @Module({
   imports: [
@@ -39,6 +41,8 @@ import * as Joi from "joi";
     ApplciantModule,
     ParticipantModule,
     AuthModule,
+    uploadmodule,
+    imageModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }],
