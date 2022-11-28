@@ -1,5 +1,6 @@
 import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import * as bcrypt from 'bcryptjs';
+// import * as bcrypt from 'bcryptjs';
+import { Exclude } from 'class-transformer';
 
 @Entity('Users')
 export class UserEntity {
@@ -12,12 +13,12 @@ export class UserEntity {
   @Column({ type: 'varchar', length: 255, name: 'password', nullable: false })
   password: string;
 
-  @BeforeInsert()
-  async hashPassword() {
-    if (this.password) {
-      this.password = await bcrypt.hash(this.password, 10);
-    }
-  }
+  // @BeforeInsert()
+  // async hashPassword() {
+  //   if (this.password) {
+  //     this.password = await bcrypt.hash(this.password, 10);
+  //   }
+  // }
 
   @Column({ type: 'varchar', length: 255, name: 'name', nullable: false })
   name: string;
@@ -68,4 +69,13 @@ export class UserEntity {
     nullable: true,
   })
   sex?: string;
+
+  @Column({
+    type: 'varchar',
+    length: 20,
+    name: 'refreshToken',
+    nullable: true,
+  })
+  @Exclude()
+  refreshToken?: string;
 }
