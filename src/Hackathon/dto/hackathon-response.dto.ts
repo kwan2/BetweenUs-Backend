@@ -19,9 +19,9 @@ export class HackathonListRO {
   hackathon_image: string;
   start_date: string;
   end_date: string;
-  developer: string;
-  pm: string;
-  designer: string;
+  developer: number;
+  pm: number;
+  designer: number;
   views: number;
 
   constructor(hackathon: HackathonEntity) {
@@ -47,9 +47,9 @@ export class HackathonDetailRO {
   content: string;
   start_date: string;
   end_date: string;
-  developer: string;
-  pm: string;
-  designer: string;
+  developer: number;
+  pm: number;
+  designer: number;
   is_progress: boolean;
   created_time: string;
   views: number;

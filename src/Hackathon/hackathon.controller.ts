@@ -18,6 +18,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { token } from 'aws-sdk/clients/sns';
 import { any, number, string } from 'joi';
+import { type } from 'os';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 import { JwtStrategy } from 'src/auth/strategy/jwt.strategy';
 import { ResponseBuilder, ResponseDto } from 'src/common/dto/response.dto';
@@ -44,7 +45,7 @@ export class HackathonController {
 
   @Public()
   @HttpCode(HttpStatus.CREATED)
-  @Post('/create')
+  @Post('/create/')
   @UseGuards(JwtStrategy)
   async createHackathon(
     @Body() hackathonDto: HackathonDto,
@@ -54,8 +55,6 @@ export class HackathonController {
       req.header('Authorization').split(' ')[1],
       this.configService.get('JWT_SECRET'),
     )['id'];
-
-    console.log(await this.userService.getByEmail(owner_id));
     const createHackathonRO: HackathonRO =
       await this.hackathonService.createHackathon(
         hackathonDto,
@@ -88,12 +87,13 @@ export class HackathonController {
 
   @Public()
   @HttpCode(HttpStatus.OK)
-  @Get('/list/:page')
+  @Get('list/:type/:page')
   async listHackathon(
     @Param('page') page,
+    @Param('type') type,
   ): Promise<ResponseDto<HackathonListRO[]>> {
     const hackathonListRO: HackathonListRO[] =
-      await this.hackathonService.hackathonList(page);
+      await this.hackathonService.hackathonList(page, type);
 
     return new ResponseBuilder<HackathonListRO[]>()
       .status(HttpStatus.OK)

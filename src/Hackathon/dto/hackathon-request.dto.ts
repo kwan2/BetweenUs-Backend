@@ -25,16 +25,16 @@ export class HackathonDto {
   readonly tag: string;
 
   @IsNotEmpty()
-  @IsString()
-  readonly developer: string;
+  @IsNumber()
+  readonly developer: number;
 
   @IsNotEmpty()
-  @IsString()
-  readonly pm: string;
+  @IsNumber()
+  readonly pm: number;
 
   @IsNotEmpty()
-  @IsString()
-  readonly designer: string;
+  @IsNumber()
+  readonly designer: number;
 
   @IsNotEmpty()
   @IsBoolean()

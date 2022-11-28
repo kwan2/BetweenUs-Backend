@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { createConnection, getConnection, Repository } from 'typeorm';
 import { HackathonDto } from './dto/hackathon-request.dto';
 import {
   HackathonDetailRO,
@@ -40,7 +40,6 @@ export class HackathonService {
     } = hackathonDto;
 
     const hackathonEntity = new HackathonEntity();
-    console.log(owner_id);
     hackathonEntity.owner_id = owner_id;
     hackathonEntity.name = name;
     hackathonEntity.start_date = start_date;
@@ -60,14 +59,46 @@ export class HackathonService {
     return new HackathonRO(savedHackathon);
   }
 
-  async hackathonList(page: number): Promise<HackathonListRO[]> {
-    const hackathonList = await this.hackathonRepository.find({
-      select: {},
-      take: 10,
-      skip: (page - 1) * 10,
-      order: { created_time: 'DESC' },
-    });
-    return hackathonList;
+  async hackathonList(page: number, type: string): Promise<HackathonListRO[]> {
+    //최신순
+    if (type == 'newest') {
+      const hackathonList = await this.hackathonRepository.find({
+        select: {},
+        take: 10,
+        skip: (page - 1) * 10,
+        order: { created_time: 'DESC' },
+      });
+      return hackathonList;
+    } else if (type == 'popular') {
+      //인기순
+      const hackathonList = await this.hackathonRepository.find({
+        select: {},
+        take: 10,
+        skip: (page - 1) * 10,
+        order: { views: 'DESC' },
+      });
+      return hackathonList;
+    } else if (type == 'size') {
+      const connection = await createConnection({
+        name: 'default',
+        type: 'mysql',
+        host: 'database-1.cmdklxbskwca.ap-northeast-2.rds.amazonaws.com',
+        port: 3306,
+        username: 'admin',
+        password: '12345678',
+        database: 'betweendb',
+      });
+      //규모순
+      const hackathonList = await getConnection()
+        .createQueryBuilder()
+        .from('Hackathons', 'H')
+        .select('*, H.pm + H.designer + H.developer', 'size')
+        .take(10)
+        .skip((page - 1) * 10)
+        .getRawMany();
+      connection.close();
+      return hackathonList;
+    }
   }
 
   async getDetailHackathon(postNum: number): Promise<HackathonDetailRO> {

@@ -31,14 +31,14 @@ export class HackathonEntity {
   @Column({ type: 'varchar', length: 50, name: 'tag', nullable: false })
   tag: string;
 
-  @Column({ type: 'varchar', length: 10, name: 'developer', nullable: true })
-  developer: string;
+  @Column({ type: 'int', name: 'developer', nullable: true })
+  developer: number;
 
-  @Column({ type: 'varchar', length: 10, name: 'pm', nullable: true })
-  pm: string;
+  @Column({ type: 'varchar', name: 'pm', nullable: true })
+  pm: number;
 
-  @Column({ type: 'varchar', length: 10, name: 'designer', nullable: true })
-  designer: string;
+  @Column({ type: 'varchar', name: 'designer', nullable: true })
+  designer: number;
 
   @Column({
     type: 'varchar',
