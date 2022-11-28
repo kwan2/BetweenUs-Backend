@@ -33,7 +33,7 @@ export class AuthService {
           } catch (error) {
             // 여기서 HttpException 발생 
             throw new HttpException(
-              'Wrong credentials provided1',
+                ' Wrong credentials provided',
               HttpStatus.BAD_REQUEST,
             );
           }

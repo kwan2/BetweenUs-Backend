@@ -23,14 +23,14 @@ export class AuthController {
     const {
         accessToken,
         ...accessOption
-    } = this.authService.getCookieWithJwtAccessToken(user.id);
+    } = this.authService.getCookieWithJwtAccessToken(user.email);
 
     const {
         refreshToken,
         ...refreshOption
-    } = this.authService.getCookieWithJwtRefreshToken(user.id);
+    } = this.authService.getCookieWithJwtRefreshToken(user.email);
 
-    await this.userService.setCurrentRefreshToken(refreshToken, user.id);
+    await this.userService.setCurrentRefreshToken(refreshToken, user.email);
 
     res.cookie('Authentication', accessToken, accessOption);
     res.cookie('Refresh', refreshToken, refreshOption);
@@ -58,7 +58,7 @@ export class AuthController {
     const {
       accessToken,
       ...accessOption
-    } = this.authService.getCookieWithJwtAccessToken(user.id);
+    } = this.authService.getCookieWithJwtAccessToken(user.email);
     res.cookie('Authentication', accessToken, accessOption);
     return user;
   }

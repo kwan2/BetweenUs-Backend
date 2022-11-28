@@ -67,12 +67,7 @@ export class UserService {
     });
   }
   async getByEmail(email: string) : Promise<UserEntity>{
-    const user =  this.userRepository.findOne({
-      where : {
-        email : email,
-      },
-      lock : {mode : "optimistic" , version : 1},
-    });
+    const user =  this.userRepository.findOne({ select : {} , where : { email : email }  });
     return user;
     throw new HttpException(
       'User with this email does not exist',
@@ -97,9 +92,12 @@ export class UserService {
       HttpStatus.NOT_FOUND,
     );
   }
-  async setCurrentRefreshToken(pastRefreshToken: string, id: number) {
+  async setCurrentRefreshToken(pastRefreshToken: string, email: string) {
     const refreshToken = await hash(pastRefreshToken, 10);
-    await this.userRepository.update(id, { refreshToken });
+    // await this.userRepository.update(email, { refreshToken });
+    const user =  await this.userRepository.findOne({ select : {} , where : { email : email }  });
+    user.refreshToken = refreshToken;
+    await this.userRepository.save(user);
   }
 
   async getUserIfRefreshTokenMatches(refreshToken: string, id: number) {
@@ -119,5 +117,8 @@ export class UserService {
     return this.userRepository.update(id, {
       refreshToken: null,
     });
+    const user = await this.userRepository.findOne({ select : {}, where : { id : id }});
+    user.refreshToken = null;
+    await this.userRepository.save(user);
   }
 }
