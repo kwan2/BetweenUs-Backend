@@ -7,30 +7,45 @@ import {
   HttpStatus,
   Param,
   Post,
+  Req,
 } from '@nestjs/common';
 import { ResponseBuilder, ResponseDto } from 'src/common/dto/response.dto';
 import { ApplicantsRO } from './dto/applicants-response.dto';
 import { ApplicantService } from './applicants.service';
 import { participantRO } from 'src/Participant/dto/participant-response.dto';
 import { Public } from 'src/config/skip-auth.decorator';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { UserService } from 'src/user/user.service';
 
 @Controller('applicant')
 export class ApplicantsController {
-  constructor(private readonly applicantsService: ApplicantService) {}
+  constructor(
+    private readonly applicantsService: ApplicantService,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
+    private readonly userService: UserService,
+  ) {}
 
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('/apply')
   async postApply(
-    //uuid는 헤더토큰 변환으로 대체 해야함
+    @Req() req,
     @Body('hackathon_id') hackathon_id: number,
-    @Body('uuid') uuid: number, //이새끼 대체 필요
     @Body('part') part: string,
     @Body('self_introduction') self_introduction: string,
   ): Promise<ResponseDto<ApplicantsRO>> {
+    const uuid: string = this.jwtService.decode(
+      req.header('Authorization').split(' ')[1],
+      this.configService.get('JWT_SECRET'),
+    )['id'];
+
     const _: ApplicantsRO = await this.applicantsService.postApplyHackathon(
       hackathon_id,
-      uuid,
+      (
+        await this.userService.getByEmail(uuid)
+      ).id,
       part,
       self_introduction,
     );
