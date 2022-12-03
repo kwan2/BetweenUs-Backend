@@ -35,6 +35,7 @@ export class ApplicantsController {
     @Body('hackathon_id') hackathon_id: number,
     @Body('part') part: string,
     @Body('self_introduction') self_introduction: string,
+<<<<<<< HEAD
   ): Promise<ResponseDto<ApplicantsRO>> {
     const uuid: string = this.jwtService.decode(
       req.header('Authorization').split(' ')[1],
@@ -46,6 +47,13 @@ export class ApplicantsController {
       (
         await this.userService.getByEmail(uuid)
       ).id,
+=======
+    @Body('user_id') user_id
+  ): Promise<ResponseDto<ApplicantsRO>> {
+    const _: ApplicantsRO = await this.applicantsService.postApplyHackathon(
+      hackathon_id,
+      user_id,
+>>>>>>> test1
       part,
       self_introduction,
     );

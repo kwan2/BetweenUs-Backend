@@ -21,9 +21,15 @@ export class HackathonService {
 
   async createHackathon(
     hackathonDto: HackathonDto,
+<<<<<<< HEAD
     owner_id: number,
   ): Promise<HackathonRO> {
     const {
+=======
+  ): Promise<HackathonRO> {
+    const {
+      owner_id,
+>>>>>>> test1
       name,
       start_date,
       end_date,
@@ -82,10 +88,17 @@ export class HackathonService {
       const connection = await createConnection({
         name: 'default',
         type: 'mysql',
+<<<<<<< HEAD
         host: 'database-1.cmdklxbskwca.ap-northeast-2.rds.amazonaws.com',
         port: 3306,
         username: 'admin',
         password: '12345678',
+=======
+        host: 'between-db.cmdklxbskwca.ap-northeast-2.rds.amazonaws.com',
+        port: 3306,
+        username: 'betweenAdmin',
+        password: 'between1234',
+>>>>>>> test1
         database: 'betweendb',
       });
       //규모순

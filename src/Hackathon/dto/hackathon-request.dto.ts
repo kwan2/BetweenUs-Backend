@@ -1,6 +1,10 @@
-import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, isNotEmpty, IsNotEmpty, IsNumber, isString, IsString } from 'class-validator';
 
 export class HackathonDto {
+  @IsNotEmpty()
+  @IsNumber()
+  readonly owner_id: number;
+
   @IsNotEmpty()
   @IsString()
   readonly name: string;

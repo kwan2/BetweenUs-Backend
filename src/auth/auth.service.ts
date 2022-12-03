@@ -56,8 +56,13 @@ export class AuthService {
       }
     }
   }
+<<<<<<< HEAD
   getCookieWithJwtAccessToken(id: any) {
     const payload = { id };
+=======
+  getCookieWithJwtAccessToken(email: any, id: number) {
+    const payload = { id, email };
+>>>>>>> test1
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
       expiresIn: `${this.configService.get(
