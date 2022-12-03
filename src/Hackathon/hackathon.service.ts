@@ -118,4 +118,11 @@ export class HackathonService {
     );
     return hackathonDetail;
   }
+  async getByownerID (owner_id : number ) : Promise<HackathonEntity> {
+    const result : HackathonEntity = await this.hackathonRepository.findOne({
+      select : {},
+      where :{ owner_id : owner_id, },
+    }) 
+    return result; 
+  }
 }
