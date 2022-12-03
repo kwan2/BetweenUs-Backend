@@ -5,7 +5,6 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  Param,
   Post,
 } from '@nestjs/common';
 import { ApplicantService } from 'src/Applicant/applicants.service';
