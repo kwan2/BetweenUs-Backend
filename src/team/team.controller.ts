@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Res, UseGuards } from '@nestjs/common';
 import { JwtRefreshGuard } from 'src/auth/guard/jwt-refresh.guard';
 import { ResponseBuilder, ResponseDto } from 'src/common/dto/response.dto';
 import { Public } from 'src/config/skip-auth.decorator';
 import { HackathonService } from 'src/Hackathon/hackathon.service';
+import { TimelineService } from 'src/timeline/timeline.service';
 import { UserService } from 'src/user/user.service';
 import { TeamDto } from './dto/team-request.dto';
 import { TeamRO } from './dto/team-response.dto';
@@ -14,6 +15,7 @@ export class TeamController {
     constructor(
         private readonly teamService : TeamService,
         private readonly hackathonService : HackathonService,
+        private readonly timelineService : TimelineService,
     ) {}
 
     // @UseGuards(JwtRefreshGuard)
@@ -49,4 +51,19 @@ export class TeamController {
             .message('해당 해커톤의 모든 팀 데이터 삭제')
             .build();
     }
+    @Public()
+    @Post('progress/update')
+    async updateProgress (@Body() team_id : number ) : Promise<any> {
+        const teamid : number = team_id;
+        console.log(teamid);
+        const progress : number  = await this.timelineService.Totalprogress(team_id);
+        console.log(progress);
+        await this.teamService.updateProgress(progress, teamid);
+        
+        return new ResponseBuilder<number> ()
+            .status(HttpStatus.OK)
+            .message('Update Team Progress')
+            .body(progress)
+            .build();
+    } 
 }

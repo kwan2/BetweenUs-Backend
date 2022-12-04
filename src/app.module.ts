@@ -13,12 +13,9 @@ import { imageModule } from './image/image.moudle';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guard/jwt-auth.guard';
-import { TeamController } from './team/team.controller';
-import { TeamModule } from './team/team.module';
-import { TimelineController } from './timeline/timeline.controller';
-import { TimelineService } from './timeline/timeline.service';
-import { TimelineModule } from './timeline/timeline.module';
 import * as Joi from 'joi';
+import { TeamModule } from './team/team.module';
+import { TimelineModule } from './timeline/timeline.module';
 
 @Module({
   imports: [
@@ -52,6 +49,6 @@ import * as Joi from 'joi';
     TimelineModule,
   ],
   controllers: [AppController],
-  providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }, TimelineService],
+  providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }],
 })
 export class AppModule {}

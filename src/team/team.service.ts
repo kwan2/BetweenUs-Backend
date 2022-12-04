@@ -48,5 +48,21 @@ export class TeamService {
             throw new NotFoundException("Can't find Board with hackathon_id ${hackathon_id}");
         console.log(result);
     }
+    async updateProgress ( progress : number, team_id : number ) : Promise<TeamEntity>{
+        const team : TeamEntity = await this.teamRepository.findOne({
+            select : {},
+            where : {
+                teamid : team_id,
+            },
+        });
+        const teamEntity = new TeamEntity();
+        teamEntity.leader = team.leader;
+        teamEntity.hackathon_id = team.hackathon_id;
+        teamEntity.progress = progress;
+        teamEntity.teamid = team.teamid;
+        teamEntity.teamname = team.teamname;
+        await this.teamRepository.save(teamEntity);
+        return teamEntity;
+    }
 
 }

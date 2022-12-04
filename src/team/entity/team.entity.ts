@@ -18,4 +18,7 @@ export class TeamEntity {
 
   @Column({ type : 'int' , name: 'hackathon_id' })
   hackathon_id: number;
+
+  @Column({ type : 'int' , name: 'progress' ,nullable : true})
+  progress: number;
 }
