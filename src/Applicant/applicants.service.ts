@@ -47,10 +47,10 @@ export class ApplicantService {
     const connection = await createConnection({
       name: 'default',
       type: 'mysql',
-      host: 'database-1.cmdklxbskwca.ap-northeast-2.rds.amazonaws.com',
+      host: 'between-db.cmdklxbskwca.ap-northeast-2.rds.amazonaws.com',
       port: 3306,
-      username: 'admin',
-      password: '12345678',
+      username: 'betweenAdmin',
+      password: 'between1234',
       database: 'betweendb',
     });
 
@@ -78,10 +78,10 @@ export class ApplicantService {
     const connection = await createConnection({
       name: 'default',
       type: 'mysql',
-      host: 'database-1.cmdklxbskwca.ap-northeast-2.rds.amazonaws.com',
+      host: 'between-db.cmdklxbskwca.ap-northeast-2.rds.amazonaws.com',
       port: 3306,
-      username: 'admin',
-      password: '12345678',
+      username: 'betweenAdmin',
+      password: 'between1234',      
       database: 'betweendb',
     });
     const applicantsDetail = await getConnection()

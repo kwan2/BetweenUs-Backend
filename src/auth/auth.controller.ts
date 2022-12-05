@@ -6,6 +6,7 @@ import {
   Req,
   Res,
   UseGuards,
+  HttpStatus,
 } from '@nestjs/common';
 import { Public } from '../config/skip-auth.decorator';
 import { UserEntity } from '../user/entity/user.entity';
@@ -15,6 +16,7 @@ import { Response } from 'express';
 import { UserService } from '../user/user.service';
 import { JwtRefreshGuard } from './guard/jwt-refresh.guard';
 import { LocalAuthGuard } from './guard/local-auth.guard';
+import { ResponseBuilder } from 'src/common/dto/response.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -29,15 +31,21 @@ export class AuthController {
   async login(@Req() req, @Res({ passthrough: true }) res: Response) {
     const user = req.user;
     const { accessToken, ...accessOption } =
-      this.authService.getCookieWithJwtAccessToken(user.email);
+      this.authService.getCookieWithJwtAccessToken(user.email, user.id);
 
     const { refreshToken, ...refreshOption } =
       this.authService.getCookieWithJwtRefreshToken(user.email);
 
     await this.userService.setCurrentRefreshToken(refreshToken, user.email);
 
-    res.header('Authentication', accessToken);
-    res.header('Refresh', refreshToken);
+    return new ResponseBuilder<any>()
+    .status(HttpStatus.CREATED)
+    .message('created user successfully')
+    .body([{"accessToken": accessToken},
+          {"refreshToken": refreshToken},
+        {"user_id": user.id}])
+    .build();
+
   }
   @Public()
   @UseGuards(JwtRefreshGuard)
@@ -47,8 +55,8 @@ export class AuthController {
       this.authService.getCookiesForLogOut();
     await this.userService.removeRefreshToken(req.user.id);
 
-    res.header('Authentication', '');
-    res.header('Refresh', '');
+    res.setHeader('Authentication', '');
+    res.setHeader('Refresh', '');
   }
 
   @Public()
@@ -57,8 +65,9 @@ export class AuthController {
   refresh(@Req() req, @Res({ passthrough: true }) res: Response) {
     const user = req.user;
     const { accessToken, ...accessOption } =
-      this.authService.getCookieWithJwtAccessToken(user.email);
-    res.header('Authentication', accessToken);
+      this.authService.getCookieWithJwtAccessToken(user.email, user.id);
+    
+    res.setHeader('Authentication', accessToken);
     return user;
   }
 

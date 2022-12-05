@@ -45,22 +45,13 @@ export class HackathonController {
 
   @Public()
   @HttpCode(HttpStatus.CREATED)
-  @Post('/create/')
-  @UseGuards(JwtStrategy)
+  @Post('/create')
   async createHackathon(
     @Body() hackathonDto: HackathonDto,
-    @Req() req,
   ): Promise<ResponseDto<HackathonRO>> {
-    const owner_id: string = this.jwtService.decode(
-      req.header('Authorization').split(' ')[1],
-      this.configService.get('JWT_SECRET'),
-    )['id'];
     const createHackathonRO: HackathonRO =
       await this.hackathonService.createHackathon(
         hackathonDto,
-        (
-          await this.userService.getByEmail(owner_id)
-        ).id,
       );
     return new ResponseBuilder<HackathonRO>()
       .status(HttpStatus.CREATED)

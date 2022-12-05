@@ -21,9 +21,9 @@ export class HackathonService {
 
   async createHackathon(
     hackathonDto: HackathonDto,
-    owner_id: number,
   ): Promise<HackathonRO> {
     const {
+      owner_id,
       name,
       start_date,
       end_date,
@@ -82,10 +82,10 @@ export class HackathonService {
       const connection = await createConnection({
         name: 'default',
         type: 'mysql',
-        host: 'database-1.cmdklxbskwca.ap-northeast-2.rds.amazonaws.com',
+        host: 'between-db.cmdklxbskwca.ap-northeast-2.rds.amazonaws.com',
         port: 3306,
-        username: 'admin',
-        password: '12345678',
+        username: 'betweenAdmin',
+        password: 'between1234',
         database: 'betweendb',
       });
       //규모순
@@ -117,5 +117,12 @@ export class HackathonService {
       hackathonEntity,
     );
     return hackathonDetail;
+  }
+  async getByownerID (owner_id : number ) : Promise<HackathonEntity> {
+    const result : HackathonEntity = await this.hackathonRepository.findOne({
+      select : {},
+      where :{ owner_id : owner_id, },
+    }) 
+    return result; 
   }
 }
