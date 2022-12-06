@@ -1,12 +1,11 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
-
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class KanbanDto {
-    @IsNotEmpty()
-    @IsString()
-    readonly content : number;
+  @IsNotEmpty()
+  @IsString()
+  readonly content: string;
 
-    @IsNotEmpty()
-    @IsNumber()
-    readonly state : number;
+  @IsNotEmpty()
+  @IsNumber()
+  readonly state: number;
 }
