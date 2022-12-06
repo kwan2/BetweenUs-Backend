@@ -1,3 +1,4 @@
+import { bool } from 'aws-sdk/clients/signer';
 import { number } from 'joi';
 import { type } from 'os';
 import { ApplicantsEntity } from 'src/Applicant/entity/applicants.entity';
@@ -17,10 +18,7 @@ export class TimelineEntity {
   @Column({ type : 'boolean' , name: 'status', nullable: false})
   status: boolean;
 
-  @Column({ type: 'int' , name : 'teamid' })
-  teamid: number;
-
-  @Column({ type : 'int', name : 'team_timeline_id' })
-  team_timeline_id : number;
+  @Column({ type : 'int' , name : 'space_id' })
+  space_id : number;
 
 }

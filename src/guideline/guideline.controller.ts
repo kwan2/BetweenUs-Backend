@@ -1,53 +1,40 @@
-import { Body, ConsoleLogger, Controller, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common';
-import { ConfigService } from 'aws-sdk';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { ResponseBuilder, ResponseDto } from 'src/common/dto/response.dto';
 import { Public } from 'src/config/skip-auth.decorator';
-import { ParticipantService } from 'src/Participant/participants.service';
-import { GuidelineArrDto, GuidelineDto } from './dto/guideline.request.dto';
-import { GuidelineRO } from './dto/guideline.responsedto';
-import { GuidelineEntity } from './entity/guideline.entity';
 import { GuidelineService } from './guideline.service';
 
 @Controller('guideline')
 export class GuidelineController {
     constructor(
         private readonly guidelineService : GuidelineService,
-        private readonly participantService : ParticipantService,
     ) {}
     
     @Public()
     @HttpCode(HttpStatus.CREATED)
     @Put(':id')
-    async createGuideline(@Param('id') id : number, @Body() codeconvention : string) : Promise<ResponseDto<void>> {
-        console.log(codeconvention);
-        const part = await this.participantService.getBypart(id);    
-        if(part != 'pm'){
-            return new ResponseBuilder<void> ()
-                .status(HttpStatus.BAD_REQUEST)
-                .message('Not Project Manger')
-                .build();
-        }
-        await this.guidelineService.createGuideline(codeconvention,id);
-        
-        return new ResponseBuilder<void>()
+    async createGuideline(@Param('id') space_id : number, @Body() codeconvention : string) : Promise<ResponseDto<string>> {  
+        const guideline = await this.guidelineService.createGuideline(codeconvention,space_id);
+        return new ResponseBuilder<string>()
             .status(HttpStatus.CREATED)
             .message('create Guideline successfully')
+            .body(guideline)
             .build();
     }
+    /**
+     * 
+     * @param id : user_id -> space_id 로 수정 할 것임. 
+     * @returns 
+     */
     @Public()
     @HttpCode(HttpStatus.OK)
     @Get('get/:id')
-    async getAllguideline (@Param('id') id : number ) : Promise<ResponseDto<GuidelineRO>> {
-        const participant = await this.participantService.getByuserID(id);
-        const guidelineEntity = await this.guidelineService.getByteamID(participant.teamid);
-        const guideline = new GuidelineRO(guidelineEntity);
-        return new ResponseBuilder<GuidelineRO>()
+    async getAllguideline (@Param('id') id : number ) : Promise<ResponseDto<any>> {
+        const guideline = this.guidelineService.getByspacdID(id);
+        return new ResponseBuilder<any>()
             .status(HttpStatus.OK)
             .message('모든 가이드라인 출력 완료')
             .body(guideline)
             .build();
-
     }
-
     
 }

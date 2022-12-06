@@ -85,7 +85,31 @@ export class ParticipantService {
       );
     }
     return participantInfo;
+ } 
+  async getTeamID (user_id : number , hackathon_id : number ) : Promise<number> {
+    console.log(user_id, hackathon_id);
+    const participantEntity = await this.participantsRepository.findOne({
+      select : {},
+      where : {
+        user_id : user_id,
+        hackathon_id : hackathon_id,
+      }
+    });
+    // if(!participantEntity){
+    //   throw new HttpException(
+    //     '유저 정보를 찾을 수 없음.',
+    //     HttpStatus.NOT_FOUND,
+    //   );
+    // }
+    // if(!participantEntity.teamid){
+    //   throw new HttpException(
+    //     '팀 아이디 찾지 못함',
+    //     HttpStatus.NOT_FOUND,
+    //   );
+    // }
+    return participantEntity[0].id;
   }
+  
   async insertTeamId(
     team_id: number,
     user_email: string,
