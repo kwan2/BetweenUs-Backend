@@ -84,6 +84,7 @@ export class TeamService {
                 hackathon_id : hackathon_id,
             }
         });
+        
         return timeArr;
     }
     
