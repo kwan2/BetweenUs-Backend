@@ -17,6 +17,7 @@ import { Public } from 'src/config/skip-auth.decorator';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserService } from 'src/user/user.service';
+import { HackathonListRO } from 'src/Hackathon/dto/hackathon-response.dto';
 
 @Controller('applicant')
 export class ApplicantsController {
@@ -35,7 +36,7 @@ export class ApplicantsController {
     @Body('hackathon_id') hackathon_id: number,
     @Body('part') part: string,
     @Body('self_introduction') self_introduction: string,
-    @Body('user_id') user_id
+    @Body('user_id') user_id,
   ): Promise<ResponseDto<ApplicantsRO>> {
     const _: ApplicantsRO = await this.applicantsService.postApplyHackathon(
       hackathon_id,
@@ -106,6 +107,20 @@ export class ApplicantsController {
     return new ResponseBuilder<participantRO>()
       .status(HttpStatus.CREATED)
       .message('delete applicant in hackathon successfully')
+      .body(body)
+      .build();
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @Get('list/:user_id')
+  async getUserApplyList(@Param('user_id') user_id: number): Promise<any> {
+    const body = await this.applicantsService.getUserApplyHackathonList(
+      user_id,
+    );
+    return new ResponseBuilder<any>()
+      .status(HttpStatus.CREATED)
+      .message('get user applying hackathon list')
       .body(body)
       .build();
   }

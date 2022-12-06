@@ -20,9 +20,7 @@ export class HackathonService {
     private readonly hackathonException: HackathonExeption,
   ) {}
 
-  async createHackathon(
-    hackathonDto: HackathonDto,
-  ): Promise<HackathonRO> {
+  async createHackathon(hackathonDto: HackathonDto): Promise<HackathonRO> {
     const {
       owner_id,
       name,
@@ -119,12 +117,19 @@ export class HackathonService {
     );
     return hackathonDetail;
   }
-  async getByownerID (owner_id : number ) : Promise<HackathonEntity> {
-    const result : HackathonEntity = await this.hackathonRepository.findOne({
-      select : {},
-      where :{ owner_id : owner_id, },
-    }) 
-    return result; 
+  async getByownerID(owner_id: number): Promise<HackathonEntity> {
+    const result: HackathonEntity = await this.hackathonRepository.findOne({
+      select: {},
+      where: { owner_id: owner_id },
+    });
+    return result;
+  }
+  async getUserHackathonList(user_id: number): Promise<HackathonListRO[]> {
+    const result: HackathonEntity[] = await this.hackathonRepository.find({
+      select: {},
+      where: { owner_id: user_id },
+    });
+    return result;
   }
   // async getHackathonListById (hackathonArr : number[]) : Promise <HackathonRO> {
   //   array.forEach(element => {
