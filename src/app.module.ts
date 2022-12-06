@@ -24,6 +24,8 @@ import { GuidelineModule } from './guideline/guideline.module';
 import { SpaceController } from './space/space.controller';
 import { SpaceModule } from './space/space.module';
 import { SurveyModule } from './Survey/Survey.module';
+import { FreeboardController } from './freeboard/freeboard.controller';
+import { FreeboardModule } from './freeboard/freeboard.module';
 
 
 @Module({
@@ -60,6 +62,7 @@ import { SurveyModule } from './Survey/Survey.module';
     GuidelineModule,
     SpaceModule,
     SurveyModule,
+    FreeboardModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }],
