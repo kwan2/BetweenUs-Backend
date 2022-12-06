@@ -22,5 +22,4 @@ export class ParticipantsEntity {
 
   @Column({ type: 'int', name: 'teamid' })
   teamid: number;
-
 }

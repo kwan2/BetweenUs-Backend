@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { int } from 'aws-sdk/clients/datapipeline';
 import { ApplicantsEntity } from 'src/Applicant/entity/applicants.entity';
 import { HackathonService } from 'src/Hackathon/hackathon.service';
 import { createConnection, getConnection, Repository } from 'typeorm';
@@ -85,31 +86,31 @@ export class ParticipantService {
       );
     }
     return participantInfo;
- } 
-  async getTeamID (user_id : number , hackathon_id : number ) : Promise<number> {
-    console.log(user_id, hackathon_id);
-    const participantEntity = await this.participantsRepository.findOne({
-      select : {},
-      where : {
-        user_id : user_id,
-        hackathon_id : hackathon_id,
-      }
-    });
-    // if(!participantEntity){
-    //   throw new HttpException(
-    //     '유저 정보를 찾을 수 없음.',
-    //     HttpStatus.NOT_FOUND,
-    //   );
-    // }
-    // if(!participantEntity.teamid){
-    //   throw new HttpException(
-    //     '팀 아이디 찾지 못함',
-    //     HttpStatus.NOT_FOUND,
-    //   );
-    // }
-    return participantEntity[0].id;
   }
-  
+  async getTeamID(id: number, h_id: number): Promise<number> {
+    const connection = await createConnection({
+      name: 'default',
+      type: 'mysql',
+      host: 'between-db.cmdklxbskwca.ap-northeast-2.rds.amazonaws.com',
+      port: 3306,
+      username: 'betweenAdmin',
+      password: 'between1234',
+      database: 'betweendb',
+    });
+    const participants = await getConnection()
+      .createQueryBuilder()
+      .select()
+      .from('Participants', 'p')
+      .where('p.user_id = :userid and p.hackathon_id = :hackathonid', {
+        userid: id,
+        hackathonid: h_id,
+      })
+      .getRawOne();
+    connection.close();
+    console.log(typeof participants);
+    return participants.teamid;
+  }
+
   async insertTeamId(
     team_id: number,
     user_email: string,
