@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ApplicantsEntity } from 'src/Applicant/entity/applicants.entity';
 import { HackathonService } from 'src/Hackathon/hackathon.service';
@@ -39,10 +39,6 @@ export class ParticipantService {
     applicantsEntity.user_id = user_id;
     applicantsEntity.hackathon_id = hackathon_id;
     applicantsEntity.part = part;
-
-    // const savedApplicants = await this.ApplicantsRepository.delete(
-    //   applicantsEntity,
-    // );
     return;
   }
   async getBypart(user_id: number): Promise<any> {
@@ -52,6 +48,12 @@ export class ParticipantService {
         user_id: user_id,
       },
     });
+    if (!participantEntity) {
+      throw new HttpException(
+        '유저 정보를 찾을 수 없음.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
     return participantEntity.part;
   }
   async getByuserID(user_id: number): Promise<any> {
@@ -61,6 +63,12 @@ export class ParticipantService {
         user_id: user_id,
       },
     });
+    if (!participantEntity) {
+      throw new HttpException(
+        '유저 정보를 찾을 수 없음.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
     return participantEntity;
   }
   async getHackathonIdByID(user_id: number): Promise<any> {
@@ -70,6 +78,12 @@ export class ParticipantService {
         user_id: user_id,
       },
     });
+    if (!participantInfo) {
+      throw new HttpException(
+        '유저 정보를 찾을 수 없음.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
     return participantInfo;
   }
   async insertTeamId(

@@ -19,33 +19,6 @@ export class UserService {
     private readonly userException: UserException,
   ) {}
 
-  // async registerUser(
-  //   registerUserDto: RegisterUserDto,
-  // ): Promise<RegisterUserRO> {
-  //   const { email, password, name, description, major, age, sex } =
-  //     registerUserDto;
-
-  //   const existUser = await this.userRepository.findOne({
-  //     where: {
-  //       email: email,
-  //     },
-  //   });
-  //   if (existUser) {
-  //     this.userException.userAlreadyExistException();
-  //   }
-
-  //   const userEntity = new UserEntity();
-  //   userEntity.email = email;
-  //   userEntity.password = password;
-  //   userEntity.name = name;
-  //   userEntity.description = description;
-  //   userEntity.major = major;
-  //   userEntity.age = age;
-  //   userEntity.sex = sex;
-
-  //   const savedUser = await this.userRepository.save(userEntity);
-  //   return new RegisterUserRO(savedUser);
-  // }
   findAll(): Promise<UserEntity[]> {
     return this.userRepository.find();
   }
@@ -77,10 +50,6 @@ export class UserService {
       where: { email: email },
     });
     return user;
-    throw new HttpException(
-      'User with this email does not exist',
-      HttpStatus.NOT_FOUND,
-    );
   }
   async create(user: UserEntity): Promise<UserEntity> {
     await this.userRepository.save(user);
@@ -128,11 +97,5 @@ export class UserService {
     return this.userRepository.update(id, {
       refreshToken: null,
     });
-    const user = await this.userRepository.findOne({
-      select: {},
-      where: { id: id },
-    });
-    user.refreshToken = null;
-    await this.userRepository.save(user);
   }
 }

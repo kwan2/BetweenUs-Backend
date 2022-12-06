@@ -33,7 +33,21 @@ export class GuidelineController {
             .status(HttpStatus.CREATED)
             .message('create Guideline successfully')
             .build();
-    } 
+    }
+    @Public()
+    @HttpCode(HttpStatus.OK)
+    @Get('get/:id')
+    async getAllguideline (@Param('id') id : number ) : Promise<ResponseDto<GuidelineRO>> {
+        const participant = await this.participantService.getByuserID(id);
+        const guidelineEntity = await this.guidelineService.getByteamID(participant.teamid);
+        const guideline = new GuidelineRO(guidelineEntity);
+        return new ResponseBuilder<GuidelineRO>()
+            .status(HttpStatus.OK)
+            .message('모든 가이드라인 출력 완료')
+            .body(guideline)
+            .build();
+
+    }
 
     
 }

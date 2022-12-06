@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResponseBuilder } from 'src/common/dto/response.dto';
 import { ParticipantService } from 'src/Participant/participants.service';
@@ -25,9 +25,6 @@ export class GuidelineService {
      * userId -> 
      */
     async createGuideline(codeconvention : string , user_id : number ) : Promise <void> {
-        
-        // jsonArray로 들어옴 
-        // const user_id : string = guideline.user_id;
         const participantInfo = await this.participateService.getByuserID(user_id);
         const teamid = await this.teamService.getByhackthonID(participantInfo.hackathon_id);
         
@@ -35,10 +32,6 @@ export class GuidelineService {
         guidelineEntity.codeconvention = codeconvention;
         guidelineEntity.hackathon_id = participantInfo.hackathon_id;
         guidelineEntity.teamid = teamid;     
-        // await this.guidelineRepository.upsert(guidelineEntity);  
-        // guidelineArrDto.value.forEach(async data => {
-     
-        // });
 
         await this.guidelineRepository.createQueryBuilder()
             .insert()
@@ -46,5 +39,22 @@ export class GuidelineService {
             .values(guidelineEntity)
             .orUpdate(['codeconvention'])
             .execute()
+    }
+    async getByteamID (teamid : number ) : Promise<any> {
+        const codeconvention = await this.guidelineRepository.find({
+            select : {
+                codeconvention : true,
+            },
+            where : {
+                teamid : teamid,
+            }
+        });
+        if(!codeconvention){
+            throw new HttpException(
+              '가이드라인 테이블에서 팀 ID 정보를  찾을 수 없음.',
+              HttpStatus.NOT_FOUND,
+            );
+          }
+        return codeconvention;
     }
 }
