@@ -1,3 +1,4 @@
+import { KanbanEntity } from 'src/kanban/entity/kanban.entity';
 import { runInThisContext } from 'vm';
 import { TeamEntity } from '../entity/team.entity';
 
