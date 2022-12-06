@@ -18,22 +18,6 @@ import { UserEntity } from './entity/user.entity';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
-  // @HttpCode(HttpStatus.CREATED)
-  // @Post('/register')
-  // async registerUser(
-  //   @Body() registerUserDto: RegisterUserDto,
-  // ): Promise<ResponseDto<RegisterUserRO>> {
-  //   const registerUserRO: RegisterUserRO = await this.userService.registerUser(
-  //     registerUserDto,
-  //   );
-
-  //   return new ResponseBuilder<RegisterUserRO>()
-  //     .status(HttpStatus.CREATED)
-  //     .message('Register user successfully')
-  //     .body(registerUserRO)
-  //     .build();
-  // }
   @Public()
   @Get()
   findAll(): Promise<UserEntity[]> {

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ParticipantService } from 'src/Participant/participants.service';
 import { TeamService } from 'src/team/team.service';
@@ -77,6 +77,12 @@ export class TimelineService {
                 teamid : teamid,
             },
         })
+        if(!timelineEntity){
+            throw new HttpException(
+              '유저 정보를 찾을 수 없음.',
+              HttpStatus.NOT_FOUND,
+            );
+        }
         return timelineEntity.recommend_timeline_id;
     }
 }
