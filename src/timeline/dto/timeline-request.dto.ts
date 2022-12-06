@@ -16,7 +16,7 @@ export class TeamTimelineDto {
 
     @IsNotEmpty()
     @IsNumber()
-    readonly teamid : number;
+    readonly team_timeline_id : number;
 
 }
 

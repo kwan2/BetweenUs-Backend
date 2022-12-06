@@ -1,9 +1,9 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, ConsoleLogger, Controller, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { ConfigService } from 'aws-sdk';
 import { ResponseBuilder, ResponseDto } from 'src/common/dto/response.dto';
 import { Public } from 'src/config/skip-auth.decorator';
 import { ParticipantService } from 'src/Participant/participants.service';
-import { GuidelineDto } from './dto/guideline.request.dto';
+import { GuidelineArrDto, GuidelineDto } from './dto/guideline.request.dto';
 import { GuidelineRO } from './dto/guideline.responsedto';
 import { GuidelineEntity } from './entity/guideline.entity';
 import { GuidelineService } from './guideline.service';
@@ -17,25 +17,23 @@ export class GuidelineController {
     
     @Public()
     @HttpCode(HttpStatus.CREATED)
-    @Post()
-    async createGuideline(@Body() guidelineDto : GuidelineDto) : Promise<ResponseDto<void>> {
-        const part = await this.participantService.getBypart(guidelineDto.user_id);    
+    @Put(':id')
+    async createGuideline(@Param('id') id : number, @Body() codeconvention : string) : Promise<ResponseDto<void>> {
+        console.log(codeconvention);
+        const part = await this.participantService.getBypart(id);    
         if(part != 'pm'){
             return new ResponseBuilder<void> ()
                 .status(HttpStatus.BAD_REQUEST)
                 .message('Not Project Manger')
                 .build();
         }
-        // const guidelineRO  = await this.guidelineService.createGuideline(guidelineDto);
-
+        await this.guidelineService.createGuideline(codeconvention,id);
+        
         return new ResponseBuilder<void>()
             .status(HttpStatus.CREATED)
             .message('create Guideline successfully')
             .build();
     } 
-    // @Public()
-    // @HttpCode(HttpStatus.OK)
-    // @Get(":user_id")
-    // async 
+
     
 }

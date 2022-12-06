@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Tree } from 'typeorm';
 import { TeamEntity } from 'src/team/entity/team.entity';
 import { TeamDto } from './dto/team-request.dto';
-import { TeamRO  } from './dto/team-response.dto';
+import { ProgressRO, TeamRO  } from './dto/team-response.dto';
+import { time } from 'console';
 @Injectable()
 export class TeamService {
     constructor(
@@ -72,7 +73,19 @@ export class TeamService {
           },
         });
         return teamEntity.teamid;
-      }
+    }
+    async getAllProgress(hackathon_id : number) : Promise<ProgressRO[]> {
+        const timeArr = await this.teamRepository.find({
+            select : { 
+                teamname:true,
+                progress:true,
+            },
+            where : {
+                hackathon_id : hackathon_id,
+            }
+        });
+        return timeArr;
+    }
     
 
 }

@@ -5,7 +5,7 @@ import { ParticipantService } from 'src/Participant/participants.service';
 import { TeamService } from 'src/team/team.service';
 import { TimelineService } from 'src/timeline/timeline.service';
 import { Repository } from 'typeorm';
-import { GuidelineDto } from './dto/guideline.request.dto';
+import { GuidelineArrDto, GuidelineDto } from './dto/guideline.request.dto';
 import { GuidelineRO } from './dto/guideline.responsedto';
 import { GuidelineEntity } from './entity/guideline.entity';
 
@@ -24,25 +24,27 @@ export class GuidelineService {
      * 
      * userId -> 
      */
-    async createGuideline(guideline : GuidelineDto) : Promise <any> {
+    async createGuideline(codeconvention : string , user_id : number ) : Promise <void> {
         
+        // jsonArray로 들어옴 
         // const user_id : string = guideline.user_id;
-        const participantInfo = await this.participateService.getByuserID(guideline.user_id);
+        const participantInfo = await this.participateService.getByuserID(user_id);
         const teamid = await this.teamService.getByhackthonID(participantInfo.hackathon_id);
-        const timeline_id = await this.timelineService.getIdByteamId(teamid);
-                
+        
         const guidelineEntity = new GuidelineEntity();
-        guidelineEntity.codeconvention = guideline.codeconvention;
+        guidelineEntity.codeconvention = codeconvention;
         guidelineEntity.hackathon_id = participantInfo.hackathon_id;
-        guidelineEntity.recommend_timeline_id = timeline_id;
-        guidelineEntity.teamid = teamid;
+        guidelineEntity.teamid = teamid;     
+        // await this.guidelineRepository.upsert(guidelineEntity);  
+        // guidelineArrDto.value.forEach(async data => {
+     
+        // });
 
-        const saveGuideline = await this.guidelineRepository.save(guidelineEntity);
-
-        const guidelineRO = new GuidelineRO(
-            saveGuideline
-        );
-
-        return guidelineRO;
+        await this.guidelineRepository.createQueryBuilder()
+            .insert()
+            .into(GuidelineEntity,['codeconvention','teamid','hackathon_id'])
+            .values(guidelineEntity)
+            .orUpdate(['codeconvention'])
+            .execute()
     }
 }

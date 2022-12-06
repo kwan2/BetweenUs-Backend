@@ -1,5 +1,6 @@
-import { Type } from "class-transformer";
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { Transform, Type } from "class-transformer";
+import { IsJSON, IsNotEmpty, IsNumber, IsObject, IsString } from "class-validator";
+import { json } from "stream/consumers";
 
 
 export class GuidelineDto {
@@ -13,8 +14,9 @@ export class GuidelineDto {
 
 }
 
-export class GuidelineGetDto {
+export class GuidelineArrDto {
+
     @IsNotEmpty()
     @IsString()
-    readonly codeconvention : string;
+    readonly value : object[];
 }

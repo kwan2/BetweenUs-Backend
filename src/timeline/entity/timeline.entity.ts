@@ -20,7 +20,7 @@ export class TimelineEntity {
   @Column({ type: 'int' , name : 'teamid' })
   teamid: number;
 
-  @Column({ type : 'int', name : 'tmea_timeline_id' })
+  @Column({ type : 'int', name : 'team_timeline_id' })
   team_timeline_id : number;
 
 }

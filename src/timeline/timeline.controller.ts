@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
 import { ResponseBuilder, ResponseDto } from 'src/common/dto/response.dto';
 import { Public } from 'src/config/skip-auth.decorator';
+import { TeamService } from 'src/team/team.service';
 import { TeamTimelineDto, TimelineDto } from './dto/timeline-request.dto';
 import { TimelineEntity } from './entity/timeline.entity';
 import { TimelineService } from './timeline.service';
@@ -10,12 +11,22 @@ import { TimelineService } from './timeline.service';
 export class TimelineController {
     constructor(
         private readonly timelineService : TimelineService,
+        private readonly teamService : TeamService,
     ) {}
     
     @Public()
     @Post('create')
-    async createTimeline (@Body() timeline : TeamTimelineDto ) : Promise<TimelineEntity> {
-        return await this.timelineService.createTimeline(timeline);
+    async createTimeline (@Body() timeline : TeamTimelineDto ) : Promise<ResponseDto<TimelineEntity[]>> {
+        const timeLine =  await this.timelineService.createTimeline(timeline);
+        const timelineArr = await this.timelineService.getAllTimeline(timeLine.teamid);
+        const progress : number  = await this.timelineService.Totalprogress(timeLine.teamid);
+        await this.teamService.updateProgress(progress,timeLine.teamid);
+        return new ResponseBuilder<TimelineEntity[]>()
+            .message('진행사항 추가 완료 ')
+            .status(HttpStatus.CREATED)
+            .body(timelineArr)
+            .build();
+        
     }
 
     @Public()

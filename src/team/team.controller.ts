@@ -6,7 +6,7 @@ import { HackathonService } from 'src/Hackathon/hackathon.service';
 import { TimelineService } from 'src/timeline/timeline.service';
 import { UserService } from 'src/user/user.service';
 import { TeamDto } from './dto/team-request.dto';
-import { TeamRO } from './dto/team-response.dto';
+import { ProgressRO, TeamRO } from './dto/team-response.dto';
 import { TeamEntity } from './entity/team.entity';
 import { TeamService } from './team.service';
 
@@ -57,18 +57,14 @@ export class TeamController {
             .build();
     }
     @Public()
-    @Post('progress/update')
-    async updateProgress (@Body() team_id : number ) : Promise<any> {
-        const teamid : number = team_id;
-        console.log(teamid);
-        const progress : number  = await this.timelineService.Totalprogress(team_id);
-        console.log(progress);
-        await this.teamService.updateProgress(progress, teamid);
+    @Get('progress/:id')
+    async searchAllProgress(@Param('id') id : number) : Promise<ResponseDto<ProgressRO[]>> {
+        const allProgress = await this.teamService.getAllProgress(id);
         
-        return new ResponseBuilder<number> ()
+        return new ResponseBuilder<ProgressRO[]> ()
             .status(HttpStatus.OK)
-            .message('Update Team Progress')
-            .body(progress)
+            .message('전체 각 팀별 진행율 조회 완료')
+            .body(allProgress)
             .build();
-    } 
+    }
 }

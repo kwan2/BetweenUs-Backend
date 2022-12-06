@@ -18,7 +18,13 @@ export class TimelineService {
 
     async createTimeline (timeline : TeamTimelineDto) : Promise<TimelineEntity> {
         
-        const result : TimelineEntity = await this.timelineRepository.save(timeline);
+        const teamInfo = await this.participantService.getByuserID(timeline.user_id);
+        const timelineEntity = new TimelineEntity();
+        timelineEntity.teamid = teamInfo.teamid;
+        timelineEntity.content = timeline.content;
+        timelineEntity.status = timeline.status;
+        timelineEntity.team_timeline_id = timeline.team_timeline_id;
+        const result : TimelineEntity = await this.timelineRepository.save(timelineEntity);
         return result;
     }
     async getAllTimeline (teamid : number ) : Promise<TimelineEntity[]>{
