@@ -17,3 +17,13 @@ export class TeamRO {
   }
 
 }
+
+export class ProgressRO {
+  teamname : string;
+  progress : number;
+  constructor(teamEntity : TeamEntity){
+    this.teamname = teamEntity.teamname;
+    this.progress = teamEntity.progress;
+  }
+
+}
