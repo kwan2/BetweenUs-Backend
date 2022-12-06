@@ -1,14 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { KanbanEntity } from 'src/kanban/entity/kanban.entity';
-import { KanbanController } from 'src/kanban/kanban.controller';
-import { KanbanService } from 'src/kanban/kanban.service';
+import { FreeboardEntity } from './entity/freeboard.entity';
+import { FreeboardController } from './freeboard.controller';
 import { FreeboardService } from './freeboard.service';
 
 @Module({
   providers: [FreeboardService],
-  imports: [TypeOrmModule.forFeature([KanbanEntity])],
-  controllers: [KanbanController],
-  exports : [KanbanService],
+  imports: [TypeOrmModule.forFeature([FreeboardEntity])],
+  controllers: [FreeboardController],
+  exports: [FreeboardService],
 })
 export class FreeboardModule {}

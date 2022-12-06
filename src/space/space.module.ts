@@ -7,9 +7,8 @@ import { SpaceController } from './space.controller';
 import { SpaceService } from './space.service';
 
 @Module({
-  imports : [TypeOrmModule.forFeature([SpaceEntity,ParticipantsEntity])],
-  providers: [SpaceService,ParticipantService],
-  controllers : [SpaceController],
-
+  imports: [TypeOrmModule.forFeature([SpaceEntity, ParticipantsEntity])],
+  providers: [SpaceService, ParticipantService],
+  controllers: [SpaceController],
 })
 export class SpaceModule {}
