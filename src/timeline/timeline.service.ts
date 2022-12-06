@@ -1,7 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ParticipantService } from 'src/Participant/participants.service';
+import { TeamService } from 'src/team/team.service';
 import { getConnection, Repository } from 'typeorm';
-import { TeamTimelineDto } from './dto/timeline-request.dto';
+import { TeamTimelineDto, TimelineDto } from './dto/timeline-request.dto';
 import { TimelineEntity } from './entity/timeline.entity';
 
 @Injectable()
@@ -10,9 +12,12 @@ export class TimelineService {
     constructor(
         @InjectRepository(TimelineEntity)
         private readonly timelineRepository : Repository<TimelineEntity>,
+        private readonly participantService : ParticipantService,
+        private readonly teamService : TeamService,
     ){}
 
     async createTimeline (timeline : TeamTimelineDto) : Promise<TimelineEntity> {
+        
         const result : TimelineEntity = await this.timelineRepository.save(timeline);
         return result;
     }
@@ -24,19 +29,17 @@ export class TimelineService {
             },
         })
     }
-    // 정렬해서, 몇 번째 진행상황 일 때, 
-    async getBysequence (recommend_timeline_id : number ,teamid : number ) {
-        const timeline : TimelineEntity = await this.timelineRepository.findOne({
-            select : {},
-            where : {
-                recommend_timeline_id : recommend_timeline_id
-            }
-        });
-        return timeline;
-    }
 
-    async deleteTimeline(recommend_timeline_id : number) {
-        const result = await this.timelineRepository.delete(recommend_timeline_id);
+    async deleteTimeline(timelineDto : TimelineDto) {
+        const participant = await this.participantService.getByuserID(timelineDto.user_id);
+        const timeline = await this.timelineRepository.findOne({
+            select : {},
+            where : { 
+                teamid : participant.teamid,
+                team_timeline_id : timelineDto.id, 
+            },
+        })
+        const result = await this.timelineRepository.delete(timeline);
         if(result.affected === 0)
             throw new NotFoundException("Can't find Board with hackathon_id ${hackathon_id}");
         console.log(result);
@@ -49,17 +52,25 @@ export class TimelineService {
         const timeline : TimelineEntity[] = await this.timelineRepository.find({
             where : {
                 teamid : teamid,
-                status : "done",
+                status : true,
             },
-        })
-        console.log(timeline.length);
+        });
         const totalCount : TimelineEntity[] = await this.timelineRepository.find({
             where : {
                 teamid : teamid,
             },
-        })
-        console.log(totalCount.length);
+        });
+        
         const progress = timeline.length / totalCount.length * 100;
         return progress;
+    }
+    async getIdByteamId (teamid : number) : Promise<any> {
+        const timelineEntity = await this.timelineRepository.findOne({
+            select: {},
+            where : {
+                teamid : teamid,
+            },
+        })
+        return timelineEntity.recommend_timeline_id;
     }
 }

@@ -29,11 +29,15 @@ export class TeamController {
             .body(result)
             .build();
     }
-    @Public()
-    @Get(':id')
-    async findTeamOne (@Param('id') team_id : number ) : Promise<TeamEntity>{
-        return await this.teamService.findTeamOne(team_id);
-    }
+    // @Public()
+    // @HttpCode(HttpStatus.OK)
+    // @Get('detail/:type')
+    // async findTeamDetail(@Body() teamid : number) : Promise<any> {
+    //     // const kanbanBoard = 
+
+    //     return new ResponseBuilder<any> ()
+    // }
+
     @Public()
     @HttpCode(HttpStatus.OK)
     @Get(':pageNum')
@@ -43,9 +47,10 @@ export class TeamController {
         return await this.teamService.findAllTeamList(pageNum,hackathon_id);
     }
     @Public()
-    @Delete(':id')
-    async deleteTeam (@Param('id') hackathon_id : number) : Promise<ResponseDto<void>> {
-        await this.teamService.deleteTeam(hackathon_id);
+    @Delete()
+    async deleteTeam (@Body() user_id : number) : Promise<ResponseDto<void>> {
+        const hackathon = await this.hackathonService.getByownerID(user_id);
+
         return new ResponseBuilder<void> ()
             .status(HttpStatus.OK)
             .message('해당 해커톤의 모든 팀 데이터 삭제')

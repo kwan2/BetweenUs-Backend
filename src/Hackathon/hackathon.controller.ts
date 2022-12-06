@@ -117,4 +117,5 @@ export class HackathonController {
       .body(hackathonDetailRO)
       .build();
   }
+  
 }

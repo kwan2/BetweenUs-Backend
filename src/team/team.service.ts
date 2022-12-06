@@ -64,5 +64,15 @@ export class TeamService {
         await this.teamRepository.save(teamEntity);
         return teamEntity;
     }
+    async getByhackthonID(hackathon_id : number ) : Promise<any> {
+        const teamEntity = await this.teamRepository.findOne({
+          select : {},
+          where : {
+            hackathon_id : hackathon_id,
+          },
+        });
+        return teamEntity.teamid;
+      }
+    
 
 }

@@ -16,4 +16,7 @@ export class ParticipantsEntity {
 
   @Column({ type: 'varchar', length: '50', name: 'part' })
   part: string;
+
+  @Column ({type : 'int' , name:'teamid'})
+  teamid : number;
 }
