@@ -49,6 +49,7 @@ export class TeamController {
         database: 'betweendb',
       });
       await this.addparticipant(result, user_email);
+      connection.close();
     });
 
     return new ResponseBuilder<any>()
