@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class TeamDto {
   @IsNotEmpty()
@@ -14,3 +14,16 @@ export class TeamDto {
   readonly leader: string;
 }
 
+export class createTeamDto {
+  @IsNotEmpty()
+  @IsNumber()
+  readonly hackathon_id: number;
+
+  @IsNotEmpty()
+  @IsArray()
+  readonly user_Arr: string[];
+
+  @IsNotEmpty()
+  @IsString()
+  readonly team_name: string;
+}

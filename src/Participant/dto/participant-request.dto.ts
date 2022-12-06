@@ -13,3 +13,13 @@ export class ApplicantsDto {
   @IsString()
   readonly part: string;
 }
+
+export class updateTeamIdDto {
+  @IsNotEmpty()
+  @IsString()
+  readonly user_email: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  readonly hackathon_id: number;
+}
