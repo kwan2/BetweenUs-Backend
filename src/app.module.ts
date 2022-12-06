@@ -21,6 +21,7 @@ import { KanbanModule } from './kanban/kanban.module';
 import { GuidelineController } from './guideline/guideline.controller';
 import { GuidelineService } from './guideline/guideline.service';
 import { GuidelineModule } from './guideline/guideline.module';
+import { SurveyModule } from './Survey/Survey.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { GuidelineModule } from './guideline/guideline.module';
     TimelineModule,
     KanbanModule,
     GuidelineModule,
+    SurveyModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }],
