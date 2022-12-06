@@ -16,6 +16,11 @@ import { JwtAuthGuard } from './auth/guard/jwt-auth.guard';
 import * as Joi from 'joi';
 import { TeamModule } from './team/team.module';
 import { TimelineModule } from './timeline/timeline.module';
+import { KanbanController } from './kanban/kanban.controller';
+import { KanbanModule } from './kanban/kanban.module';
+import { GuidelineController } from './guideline/guideline.controller';
+import { GuidelineService } from './guideline/guideline.service';
+import { GuidelineModule } from './guideline/guideline.module';
 
 @Module({
   imports: [
@@ -47,6 +52,8 @@ import { TimelineModule } from './timeline/timeline.module';
     imageModule,
     TeamModule,
     TimelineModule,
+    KanbanModule,
+    GuidelineModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }],

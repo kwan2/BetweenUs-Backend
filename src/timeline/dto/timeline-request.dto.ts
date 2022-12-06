@@ -1,13 +1,6 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { isBoolean, IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class TeamTimelineDto {
-    @IsNotEmpty()
-    @IsString()
-    readonly start_time: string;
-
-    @IsNotEmpty()
-    @IsString()
-    readonly end_time: string;
 
     @IsNotEmpty()
     @IsString()
@@ -15,11 +8,15 @@ export class TeamTimelineDto {
 
     @IsNotEmpty()
     @IsNumber()
-    readonly teamid: number;
+    readonly user_id: number;
 
     @IsNotEmpty()
-    @IsString()
-    readonly status: string;
+    @IsBoolean()
+    readonly status: boolean;
+
+    @IsNotEmpty()
+    @IsNumber()
+    readonly teamid : number;
 
 }
 
@@ -29,3 +26,13 @@ export class TotalTimelineDto {
     readonly hackathon_id: number;
 }
   
+export class TimelineDto {
+
+    @IsNotEmpty()
+    @IsNumber()
+    id : number;
+
+    @IsNotEmpty()
+    @IsNumber()
+    readonly user_id : number; 
+}

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ApplicantsEntity } from 'src/Applicant/entity/applicants.entity';
+import { HackathonService } from 'src/Hackathon/hackathon.service';
 import { Repository } from 'typeorm';
 import { participantRO } from './dto/participant-response.dto';
 import { ParticipantsEntity } from './entity/participant.entity';
@@ -11,7 +12,6 @@ export class ParticipantService {
     @InjectRepository(ParticipantsEntity)
     private readonly participantsRepository: Repository<ParticipantsEntity>,
     // private readonly ApplicantsRepository: Repository<ApplicantsEntity>,
-
   ) {}
 
   async postApplyHackathon(
@@ -45,4 +45,32 @@ export class ParticipantService {
     // );
     return;
   }
+  async getBypart(user_id :number) : Promise<any> {
+    const participantEntity = await this.participantsRepository.findOne({
+      select : {},
+      where : {
+        user_id : user_id,
+      },
+    });
+    return participantEntity.part; 
+  }
+  async getByuserID(user_id : number ) : Promise<any> {
+    const participantEntity = await this.participantsRepository.findOne({
+      select : {},
+      where : {
+        user_id : user_id,
+      },
+    });
+    return participantEntity;
+  }
+  async getHackathonIdByID ( user_id : number ) : Promise<any> {
+    const participantInfo  = await this.participantsRepository.find({
+      select : {hackathon_id : true},
+      where : {
+        user_id :user_id,
+      }
+    });
+    return participantInfo;
+    
+  } 
 }

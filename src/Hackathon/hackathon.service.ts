@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ParticipantsEntity } from 'src/Participant/entity/participant.entity';
 import { createConnection, getConnection, Repository } from 'typeorm';
 import { HackathonDto } from './dto/hackathon-request.dto';
 import {
@@ -125,4 +126,15 @@ export class HackathonService {
     }) 
     return result; 
   }
+  // async getHackathonListById (hackathonArr : number[]) : Promise <HackathonRO> {
+  //   array.forEach(element => {
+      
+  //   });
+  //   return await this.hackathonRepository.findOne({
+  //     select: {},
+  //     where : {
+  //       id : hackathonArr.forEach => {}
+  //     }
+  //   });
+  // }
 }
