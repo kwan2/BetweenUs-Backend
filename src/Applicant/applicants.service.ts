@@ -81,7 +81,7 @@ export class ApplicantService {
       host: 'between-db.cmdklxbskwca.ap-northeast-2.rds.amazonaws.com',
       port: 3306,
       username: 'betweenAdmin',
-      password: 'between1234',      
+      password: 'between1234',
       database: 'betweendb',
     });
     const applicantsDetail = await getConnection()
@@ -115,5 +115,28 @@ export class ApplicantService {
       applicantsEntity,
     );
     return savedApplicants;
+  }
+
+  async getUserApplyHackathonList(user_id: number): Promise<any> {
+    const connection = await createConnection({
+      name: 'default',
+      type: 'mysql',
+      host: 'between-db.cmdklxbskwca.ap-northeast-2.rds.amazonaws.com',
+      port: 3306,
+      username: 'betweenAdmin',
+      password: 'between1234',
+      database: 'betweendb',
+    });
+    const applicantsList = await getConnection()
+      .createQueryBuilder()
+      .select('*')
+      .from('Hackathons', 'H')
+      .from('Applicants', 'A')
+      .where('H.id = A.hackathon_id and A.user_id = :userId', {
+        userId: user_id,
+      })
+      .getRawMany();
+    connection.close();
+    return applicantsList;
   }
 }
