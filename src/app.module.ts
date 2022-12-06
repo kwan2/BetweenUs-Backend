@@ -23,6 +23,8 @@ import { GuidelineService } from './guideline/guideline.service';
 import { GuidelineModule } from './guideline/guideline.module';
 import { SpaceController } from './space/space.controller';
 import { SpaceModule } from './space/space.module';
+import { SurveyModule } from './Survey/Survey.module';
+
 
 @Module({
   imports: [
@@ -57,6 +59,7 @@ import { SpaceModule } from './space/space.module';
     KanbanModule,
     GuidelineModule,
     SpaceModule,
+    SurveyModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }],

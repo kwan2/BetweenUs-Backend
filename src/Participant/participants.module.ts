@@ -8,9 +8,9 @@ import { ParticipantsController } from './particiapants.controller';
 import { ParticipantService } from './participants.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ParticipantsEntity,HackathonEntity])],
-  providers: [ParticipantService,HackathonService,HackathonExeption],
+  imports: [TypeOrmModule.forFeature([ParticipantsEntity, HackathonEntity])],
+  providers: [ParticipantService, HackathonService, HackathonExeption],
   controllers: [ParticipantsController],
-  exports : [ParticipantService],
+  exports: [ParticipantService],
 })
 export class ParticipantModule {}
