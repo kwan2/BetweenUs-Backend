@@ -50,9 +50,7 @@ export class HackathonController {
     @Body() hackathonDto: HackathonDto,
   ): Promise<ResponseDto<HackathonRO>> {
     const createHackathonRO: HackathonRO =
-      await this.hackathonService.createHackathon(
-        hackathonDto,
-      );
+      await this.hackathonService.createHackathon(hackathonDto);
     return new ResponseBuilder<HackathonRO>()
       .status(HttpStatus.CREATED)
       .message('created Hackathon successfully')
@@ -106,6 +104,22 @@ export class HackathonController {
       .status(HttpStatus.OK)
       .message('get hackathon detail successfully')
       .body(hackathonDetailRO)
+      .build();
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @Get('list/:user_id')
+  async getUserHackathonList(
+    @Param('user_id') userid,
+  ): Promise<ResponseDto<HackathonListRO>> {
+    const hackathonListR0: HackathonListRO[] =
+      await this.hackathonService.getUserHackathonList(userid);
+
+    return new ResponseBuilder<HackathonListRO>()
+      .status(HttpStatus.OK)
+      .message('get userHackathon List success')
+      .body(hackathonListR0)
       .build();
   }
 }
