@@ -19,4 +19,7 @@ export class ParticipantsEntity {
 
   @Column ({type : 'int' , name:'teamid'})
   teamid : number;
+
+  @Column ({type: 'varchar', length: '50', name: 'user_email'})
+  user_email: string;
 }

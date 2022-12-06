@@ -10,7 +10,7 @@ export class TeamDto {
   readonly teamname: string;
 
   @IsNotEmpty()
-  @IsString()
-  readonly leader: string;
+  @IsNumber()
+  readonly leader: number;
 }
 

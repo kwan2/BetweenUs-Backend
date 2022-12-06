@@ -5,7 +5,7 @@ import { TeamEntity } from '../entity/team.entity';
 export class TeamRO {
   teamid: number;
   teamname: string;
-  leader: string;
+  leader: number;
   hackathon_id: number;
   progress : number;
   constructor(teamEntity : TeamEntity){
