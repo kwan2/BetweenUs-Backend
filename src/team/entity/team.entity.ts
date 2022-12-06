@@ -13,12 +13,12 @@ export class TeamEntity {
   @Column({ type: 'varchar', name: 'teamname', nullable: false })
   teamname: string;
 
-  @Column({ type : 'varchar' , name: 'Leader', })
+  @Column({ type: 'varchar', name: 'Leader' })
   leader: string;
 
-  @Column({ type : 'int' , name: 'hackathon_id' })
+  @Column({ type: 'int', name: 'hackathon_id' })
   hackathon_id: number;
 
-  @Column({ type : 'int' , name: 'progress' ,nullable : true})
+  @Column({ type: 'int', name: 'progress', nullable: true })
   progress: number;
 }

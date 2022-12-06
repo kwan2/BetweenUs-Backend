@@ -8,6 +8,9 @@ export class ParticipantsEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
+  @Column({ type: 'varchar', length: '50', name: 'user_email' })
+  user_email: string;
+
   @Column({ type: 'int', name: 'hackathon_id' })
   hackathon_id: number;
 
@@ -17,6 +20,6 @@ export class ParticipantsEntity {
   @Column({ type: 'varchar', length: '50', name: 'part' })
   part: string;
 
-  @Column ({type : 'int' , name:'teamid'})
-  teamid : number;
+  @Column({ type: 'int', name: 'teamid' })
+  teamid: number;
 }

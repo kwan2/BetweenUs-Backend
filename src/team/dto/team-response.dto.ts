@@ -7,23 +7,22 @@ export class TeamRO {
   teamname: string;
   leader: string;
   hackathon_id: number;
-  progress : number;
-  constructor(teamEntity : TeamEntity){
+  progress: number;
+  constructor(teamEntity: TeamEntity) {
+    this.teamid = teamEntity.teamid;
     this.hackathon_id = teamEntity.hackathon_id;
     this.teamid = teamEntity.teamid;
     this.leader = teamEntity.leader;
     this.teamname = teamEntity.teamname;
     this.progress = teamEntity.progress;
   }
-
 }
 
 export class ProgressRO {
-  teamname : string;
-  progress : number;
-  constructor(teamEntity : TeamEntity){
+  teamname: string;
+  progress: number;
+  constructor(teamEntity: TeamEntity) {
     this.teamname = teamEntity.teamname;
     this.progress = teamEntity.progress;
   }
-
 }
