@@ -10,5 +10,6 @@ import { SpaceService } from './space.service';
   imports: [TypeOrmModule.forFeature([SpaceEntity, ParticipantsEntity])],
   providers: [SpaceService, ParticipantService],
   controllers: [SpaceController],
+  exports:[SpaceService],
 })
 export class SpaceModule {}

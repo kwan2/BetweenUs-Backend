@@ -49,4 +49,12 @@ export class SpaceService {
     });
     return space;
   }
+  async getTeamId(space_id : number) : Promise<SpaceEntity>{
+    const space = await this.spaceRepository.findOne({
+      select:{},
+      where : { space_id : space_id},
+    })
+    return space;
+  }
 }
+

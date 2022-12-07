@@ -45,7 +45,7 @@ export class TimelineService {
                 status : true,
             }
         });
-        return timelineInfo.length / timelineInfo.length * 100;
+        return flagTimeline.length / timelineInfo.length * 100;
 
     }
     async getTimeline( space_id : number ) : Promise<any> {

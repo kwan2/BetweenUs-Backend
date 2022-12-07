@@ -1,6 +1,8 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Put } from "@nestjs/common";
 import { ResponseBuilder, ResponseDto } from "src/common/dto/response.dto";
 import { Public } from "src/config/skip-auth.decorator";
+import { SpaceService } from "src/space/space.service";
+import { TeamService } from "src/team/team.service";
 import { TimelineDto } from "./dto/timeline-request.dto";
 import { TimelineEntity } from "./entity/timeline.entity";
 import { TimelineService } from "./timeline.service";
@@ -11,6 +13,8 @@ import { TimelineService } from "./timeline.service";
 export class TimelineController {
     constructor(
         private readonly timelineService : TimelineService,
+        private readonly spaceService : SpaceService,
+        private readonly teamSerivce : TeamService,
     ) {}
 
     @HttpCode(HttpStatus.CREATED)
@@ -25,12 +29,14 @@ export class TimelineController {
             .body(timelineInfo)
             .build();
     }
+
     @HttpCode(HttpStatus.CREATED)
     @Public()
     @Put('progress/:id')
     async progressUpdate(@Param('id') space_id : number) : Promise<ResponseDto<void>> {
         const progress = await this.timelineService.computeProgress(space_id);
-
+        const space = await this.spaceService.getTeamId(space_id);
+        await this.teamSerivce.updateProgress(progress,space.teamid);
         return new ResponseBuilder<void> ()
             .status(HttpStatus.CREATED)
             .message('progress Update Successfully')
