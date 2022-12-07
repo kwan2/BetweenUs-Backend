@@ -40,7 +40,7 @@ export class GuidelineController {
    */
   @Public()
   @HttpCode(HttpStatus.OK)
-  @Get('get/:id')
+  @Get(':id')
   async getAllguideline(@Param('id') id: number): Promise<ResponseDto<any>> {
     const guideline = this.guidelineService.getByspacdID(id);
     return new ResponseBuilder<any>()
