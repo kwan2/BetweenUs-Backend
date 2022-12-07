@@ -22,7 +22,7 @@ export class FreeboardService {
     async getFreeboard ( space_id : number ) : Promise<FreeboardEntity[]> {
         const freeboard = await this.freeboardRepository.find({
             select: {
-                
+                content : true,
             },
             where : {
                 space_id : space_id,
