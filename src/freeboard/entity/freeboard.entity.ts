@@ -1,11 +1,11 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
-  name: 'Freeboard',
+  name: 'FreeBoard',
   synchronize: false,
 })
 export class FreeboardEntity {
-  @PrimaryGeneratedColumn({ type: 'int', name: 'kanban_id' })
+  @PrimaryGeneratedColumn({ type: 'int', name: 'board_id' })
   board_id: number;
 
   @Column({ type: 'varchar', length: 256, name: 'content', nullable: false })
