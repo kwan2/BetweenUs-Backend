@@ -42,7 +42,8 @@ export class GuidelineController {
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   async getAllguideline(@Param('id') id: number): Promise<ResponseDto<any>> {
-    const guideline = this.guidelineService.getByspacdID(id);
+    const guideline = await this.guidelineService.getByspacdID(id);
+    console.log(guideline)
     return new ResponseBuilder<any>()
       .status(HttpStatus.OK)
       .message('모든 가이드라인 출력 완료')
